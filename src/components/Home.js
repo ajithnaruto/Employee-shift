@@ -32,8 +32,8 @@ class home extends React.Component {
 
     render(){
     return (
-        <div class="row">
-        <div class="col-md-12">
+        <div class="row leftspace">
+        <div class="col-md-8">
             <div class="form">
             <h1> Shift Form </h1>
               <label for="name">Support Group</label>

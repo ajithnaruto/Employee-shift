@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-
+import SideNav from '../src/components/SideNav';
 import Home from '../src/components/Home';
 import ShiftDetails from '../src/components/ShiftDetails';
+import Landing from './components/Landing';
+import DisplayTable from './components/DisplayTable';
 
  
 class App extends Component {
@@ -10,8 +12,11 @@ class App extends Component {
     return (      
       <BrowserRouter>
         <div>
-          <Home/>
-          <ShiftDetails/>
+          {/* <SideNav/>
+          <Landing/> */}
+<DisplayTable/>
+          {/* <SideNav/>
+          <ShiftDetails/> */}
           {/* { <Navigation />
             <Switch>
              <Route path="/" component={Home} exact/>

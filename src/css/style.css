@@ -3,12 +3,7 @@
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
   }
-  
-  body {
-    font-family: 'Nunito', sans-serif;
-    color: #384047;
-  }
-  
+
   .form {
     max-width: 500px;
     margin: 10px auto;
@@ -21,7 +16,6 @@
     margin: 0 0 30px 0;
     text-align: center;
   }
-  
   input[type="text"]{
     background: rgba(255,255,255,0.1);
     border: none;
@@ -36,6 +30,9 @@
     box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
     margin-bottom: 30px;
   }
+  div#child {
+    margin: 0 auto;
+}
   
   input[type="radio"],
   input[type="checkbox"] {
@@ -104,4 +101,14 @@
     }
   
   }
-  
+.leftspace{
+  padding-left: 250px;
+}
+thead {color:green;}
+tbody {color:blue;}
+table, th, td {
+ border: 1px solid black;
+}
+td, th{
+ padding: 5px;
+}
