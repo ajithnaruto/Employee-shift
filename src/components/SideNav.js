@@ -9,8 +9,8 @@ class SideNav extends React.Component {
     return (
       <React.Fragment>
         <div name="side-nav" class="side-nav" style={sideNavStyle}>
-          <a href="">Shift Roster</a>
-          <a href="#"></a>
+          <a href="">VTR Shift Roster</a>
+          <a href="">VTR Contact details</a>
           <a href="#"></a>
           <a href="#"></a>
         </div>
