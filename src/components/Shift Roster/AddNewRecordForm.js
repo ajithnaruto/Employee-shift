@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactModal from 'react-modal';
 import axios from 'axios';
-import '../css/style.css';
+import '../../css/style.css';
 import { MDBCloseIcon } from 'mdbreact';
 import  DisplayTable from './DisplayTable';
 
