@@ -8,7 +8,7 @@ import { MDBCloseIcon } from 'mdbreact';
 import 'react-notifications/lib/notifications.css';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 
-class DynamicTable extends React.Component{
+class DynamicTableContact extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -41,11 +41,12 @@ class DynamicTable extends React.Component{
 
 updateUser(){
     const UpdateUser = {
-            support_group: this.support_group.value,
-            day:this.day.value,
-            support_engineer:this.support_engineer.value,
-            support_engineer_phone:this.support_engineer_phone.value,
-            support_engineer_email:this.support_engineer_email.value
+            team_name: this.team_name.value,
+            email_id:this.email_id.value,
+            on_call_support_group:this.on_call_support_group.value,
+            primary_number:this.primary_number.value,
+            secondary_number:this.secondary_number.value,
+            only_support:this.only_support.value
     };
     let axiosConfig = {
         headers: {
@@ -53,7 +54,7 @@ updateUser(){
             "Access-Control-Allow-Origin": "*",
         }
       };
-    axios.put(`http://localhost:8081/update_details/`+this.id.value,UpdateUser,axiosConfig)
+    axios.put(`http://localhost:8081/update_contact_details/`+this.id.value,UpdateUser,axiosConfig)
       .then(res => {
         NotificationManager.success('', 'Updated Successfully!');
       })
@@ -67,15 +68,10 @@ updateUser(){
         this.setState({ showModal: false });
         this.setState({updateForm:[]});
       }
-    fetchData(fromdt,todt){
-      var fromtemp = new Date(fromdt);
-      var fromtemp1 = fromtemp.setDate(fromtemp.getDate()-1);
-      var converted = new Date(fromtemp1);
-      var finalfromdt = converted.getFullYear()+"-"+("0" + (converted.getMonth() + 1)).slice(-2)+"-"+converted.getDate();
-      var totemp = new Date(todt);
-      var totemp1 = totemp.setDate(totemp.getDate()+1);
-      var convertedTo = new Date(totemp1);
-      var finaltodt = convertedTo.getFullYear()+"-"+("0" + (convertedTo.getMonth() + 1)).slice(-2)+"-"+convertedTo.getDate();
+      reloadPage(){
+        window.location.reload();
+      }
+    fetchData(){
       if(this.props.isReload)
         {
             window.location.reload(true);
@@ -87,7 +83,7 @@ updateUser(){
                 "Access-Control-Allow-Origin": "*",
             }
           };
-          axios.get(`http://localhost:8081/${finalfromdt}/${finaltodt}`,axiosConfig)
+          axios.get(`http://localhost:8081/getTeam`,axiosConfig)
           .then((response) => {
           let datafinal = response.data;
           this.setState({data:datafinal});
@@ -114,33 +110,30 @@ updateUser(){
 
     return [year, month, day].join('-');
     }
-    reloadPage(){
-      window.location.reload();
-    }
     componentDidMount(){
-        let date = new Date();
-        date.setDate(date.getDate() + 7);
-        let finalDate2 = this.dateConverter(date);
-        let finalDate1 = this.dateConverter(new Date);
-        this.fetchData(finalDate1,finalDate2);
+        // let date = new Date();
+        // date.setDate(date.getDate() + 7);
+        // let finalDate2 = this.dateConverter(date);
+        // let finalDate1 = this.dateConverter(new Date);
+        this.fetchData();
     }
-    componentDidUpdate(prevProps,prevState){
-      const prev = prevProps.fromDT;
-      const updated = this.props.fromDT;
-      const prev1 = prevProps.toDT;
-      const updated1 = this.props.toDT;
-      if(prev!== updated || prev1!== updated1)
-      {
-      this.fetchData(this.props.fromDT,this.props.toDT);
-      }
-    }
+    // componentDidUpdate(prevProps,prevState){
+    //   const prev = prevProps.fromDT;
+    //   const updated = this.props.fromDT;
+    //   const prev1 = prevProps.toDT;
+    //   const updated1 = this.props.toDT;
+    //   if(prev!== updated || prev1!== updated1)
+    //   {
+    //   this.fetchData(this.props.fromDT,this.props.toDT);
+    //   }
+    // }
 render(){
     const customStyles = {
         content : {
           left:'260px',
         }
       };
-    const Header = ["id","support_group", "day", "support_engineer", "support_engineer_phone", "support_engineer_email","options"];
+    const Header = ["id","team_name", "email_id", "on_call_support_group", "primary_number", "secondary_number","only_support","options"];
     const datafinal = this.state.data;
     datafinal.forEach((element,index) => {
             element["options"]=[<EditIcon onClick={()=>this.getVal(window.event)}/>]
@@ -156,29 +149,29 @@ render(){
             <MDBCloseIcon onClick={this.handleCloseModal}/>
             <div class="row">
             <div class="singleform">
-            <h3> Shift Update Form </h3>
+            <h3> Contact Update Form </h3>
               <label for="name">Id</label>
               <input type="text"  name="id" value={this.state.updateForm[0]} ref={el => this.id=el}/>
-              <label for="name">Support Group</label>
-              <input type="text"  name="support_group" defaultValue={this.state.updateForm[1]} ref={el => this.support_group=el}/>
-              <label for="email">Day</label>
-              <input type="date" name="day" defaultValue={this.state.updateForm[2]} ref={el => this.day=el}/>
-              <label for="name">Support Engineer</label>
-              <input type="text"  name="support_engineer" defaultValue={this.state.updateForm[3]} ref={el => this.support_engineer=el}/>
-              <label for="name">Phone</label>
-              <input type="text"  name="support_engineer_phone" defaultValue={this.state.updateForm[4]} ref={el => this.support_engineer_phone=el}/>
-              <label for="email">Email</label>
-              <input type="text" name="support_engineer_email" defaultValue={this.state.updateForm[5]} ref={el => this.support_engineer_email=el}/>
-            <button type="submit" class="submitt submitbtnbtn"onClick={()=>{this.updateUser();this.reloadPage()}}>Update</button>
+              <label for="name">Team Name</label>
+              <input type="text"  name="team_name" defaultValue={this.state.updateForm[1]} ref={el => this.team_name=el}/>
+              <label for="email">Email Id</label>
+              <input type="text" name="email_id" defaultValue={this.state.updateForm[2]} ref={el => this.email_id=el}/>
+              <label for="name">On Call Support Group</label>
+              <input type="text"  name="on_call_support_group" defaultValue={this.state.updateForm[3]} ref={el => this.on_call_support_group=el}/>
+              <label for="name">Primary Number</label>
+              <input type="text"  name="primary_number" defaultValue={this.state.updateForm[4]} ref={el => this.primary_number=el}/>
+              <label for="email">Secondary Number</label>
+              <input type="text" name="secondary_number" defaultValue={this.state.updateForm[5]} ref={el => this.secondary_number=el}/>
+              <label for="email">Only Support</label>
+              <input type="text" name="only_support" defaultValue={this.state.updateForm[6]} ref={el => this.only_support=el}/>
+            <button type="submit" class="submitt submitbtnbtn"onClick={()=>{this.updateUser();this.reloadPage();}}>Update</button>
             </div>
             </div>
           </ReactModal>
         <TablePagination
             headers={ Header }
             data={ datafinal }
-            columns="id.support_group.day.support_engineer.support_engineer_phone.support_engineer_email.options"
-            perPageItemCount={ 7 }
-            totalCount={ datafinal.length }
+            columns="id.team_name.email_id.on_call_support_group.primary_number.secondary_number.only_support.options"
             arrayOption={ [["size", 'all', ' ']] }
         />
         <NotificationContainer/>
@@ -186,4 +179,4 @@ render(){
     );
 }
 }
-export default DynamicTable;
+export default DynamicTableContact;

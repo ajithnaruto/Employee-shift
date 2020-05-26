@@ -2,9 +2,9 @@ import React from 'react';
 import papa from 'papaparse';
 import axios from 'axios';
 import {CSVLink} from 'react-csv';
-import Filter from './Filter';
+import FilterContact from '../Contact details/FilterContact';
 
-class ShiftDetails extends React.Component {
+class ShiftDetailsContact extends React.Component {
    constructor(props) {
       super(props);
       this.onFileUpload = this.onFileUpload.bind(this);
@@ -41,10 +41,9 @@ updateData(result) {
       }
     };
     
-  axios.post(`http://localhost:8081/create`,data,axiosConfig)
+  axios.post(`http://localhost:8081/createContact`,data,axiosConfig)
     .then(res => {
-      console.log(res);
-      console.log(res.data);
+
     })
  }
    render()
@@ -61,7 +60,7 @@ updateData(result) {
       <div class="form aligncenter">
          <div class="">
          <div>
-            <h3>Upload VTR Shift roster</h3>
+            <h3>Upload VTR Contact Details</h3>
             <input type="file"  onChange={this.onFileChange}/>
             <input type="submit" class="" class="submitt submitbtn" value="Upload" onClick={this.onFileUpload}/>
             <CSVLink data={templateCsvData} filename={templateFilename}>Download csv template</CSVLink>
@@ -71,10 +70,10 @@ updateData(result) {
       </div>
       </div>
       <br/>
-      <Filter/>
+      <FilterContact/>
       </div>
     );
    }
 }
  
-export default ShiftDetails;
+export default ShiftDetailsContact;

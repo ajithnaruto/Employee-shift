@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Router } from 'react-router-dom';
 import SideNav from './components/Shift Roster/SideNav';
 import ShiftDetails from './components/Shift Roster/ShiftDetails';
-import DisplayTable from './components/Shift Roster/DisplayTable';
-import AddNewRecordForm from './components/Shift Roster/AddNewRecordForm';
+import ShiftDetailsContact from './components/Contact details/ShiftDetailsContact';
+import FilterContact from './components/Contact details/FilterContact';
+import DisplayTableContact from './components/Contact details/DisplayTableContact';
+import AddNewRecordFormContact from './components/Contact details/AddNewRecordFormContact';
+
 
  
 class App extends Component {
@@ -11,21 +14,11 @@ class App extends Component {
     return (      
       <BrowserRouter>
         <div>
-          {/* <DynamicTable/> */}
-          {/* <Home/> */}
-          {/* <SideNav/> */}
-          {/* <Landing/> */}
-{/* <DisplayTable/> */}
           <SideNav/>
-          <ShiftDetails/>
-
-          {/* { <Navigation />
-            <Switch>
-             <Route path="/" component={Home} exact/>
-             <Route path="/about" component={About}/>
-             <Route path="/contact" component={Contact}/>
-            <Route component={Error}/>
-           </Switch> } */}
+          <Switch>
+              <Route exact path='/' component={ShiftDetails} />
+              <Route  path='/contact' component={AddNewRecordFormContact} />
+          </Switch> 
         </div> 
       </BrowserRouter>
     );

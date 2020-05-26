@@ -5,8 +5,8 @@
   }
 
   .form {
-    width: 80%;
-    margin-left:260px;
+    width: 86%;
+    margin-left:161px;
     background: #f4f7f8;
     border-radius: 8px;
   }
@@ -21,7 +21,7 @@
     margin: 0 0 30px 0;
     text-align: center;
   }
-  input[type="text"]{
+  input[type="text"],input[type="date"],input[type="email"]{
     background: rgba(255,255,255,0.1);
     border: none;
     font-size: 16px;
@@ -88,26 +88,33 @@
   @media screen and (min-width: 480px) {
   
     form {
-      max-width: 240px;
+      max-width: 260px;
     }
   
   }
 .leftspace{
-  padding-left: 250px;
+  padding-left: 151px;
 }
 
 table {
+  table-layout:fixed;
   border-collapse: collapse;
-  width: 100%;
+  margin-left: 161px;
+  align-self: center;
 }
-
+table td:nth-child(1) {
+  display: none;
+}
+table th:nth-child(1) {
+  display: none;
+}
 th{
   background-color:rgb(163, 151, 151);
 }
 th, td {
   padding: 8px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+  text-align: center;
+  border-bottom: 1px solid rgb(20, 180, 233);;
 }
 
 tr:hover {background-color:rgb(190, 171, 171);}
@@ -130,6 +137,7 @@ ul{
   list-style:none;
   width: 50%;
   margin: 0 auto;
+  text-align: center;
 }
 
 
@@ -160,4 +168,8 @@ ul{
 .flexbox-container {
   display: flex;
   flex-direction: row;
+}
+
+.rightAlign{
+  text-align: right;
 }
