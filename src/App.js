@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import SideNav from '../src/components/SideNav';
-import ShiftDetails from '../src/components/ShiftDetails';
-import DisplayTable from './components/DisplayTable';
-import AddNewRecordForm from './components/AddNewRecordForm';
+import SideNav from './components/Shift Roster/SideNav';
+import ShiftDetails from './components/Shift Roster/ShiftDetails';
+import DisplayTable from './components/Shift Roster/DisplayTable';
+import AddNewRecordForm from './components/Shift Roster/AddNewRecordForm';
 
  
 class App extends Component {
@@ -18,7 +18,7 @@ class App extends Component {
 {/* <DisplayTable/> */}
           <SideNav/>
           <ShiftDetails/>
-          
+
           {/* { <Navigation />
             <Switch>
              <Route path="/" component={Home} exact/>
