@@ -7,6 +7,9 @@ import ReactModal from 'react-modal';
 import { MDBCloseIcon } from 'mdbreact';
 import 'react-notifications/lib/notifications.css';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 class DynamicTableContact extends React.Component{
     constructor(props){
@@ -14,13 +17,17 @@ class DynamicTableContact extends React.Component{
         this.state = {
             showModal: false,
             data: [],
+            dataTemp:[],
             loading:true,
             updateForm:[],
+            only_support: false
           };
           this.handleOpenModal = this.handleOpenModal.bind(this);
           this.handleCloseModal = this.handleCloseModal.bind(this);
           this.getVal = this.getVal.bind(this);
           this.updateUser = this.updateUser.bind(this);
+          this.ApplyFilter = this.ApplyFilter.bind(this);
+          this.fetchData = this.fetchData.bind(this);
     }
     getVal(e){
         var table = document.getElementsByTagName("table")[0];
@@ -37,6 +44,21 @@ class DynamicTableContact extends React.Component{
         this.setState({ showModal: true });
     }
 
+}
+getId(e){
+  var table = document.getElementsByTagName("table")[0];
+        e = e || window.event;
+        var target = e.srcElement || e.target;
+        while (target && target.nodeName !== "TR") {
+        target = target.parentNode;
+        }
+        if (target) {
+        var cells = target.getElementsByTagName("td");
+        var idval = cells[0].innerHTML;
+        axios.delete("http://localhost:8081/delete_contact/"+idval).then(
+          this.reloadPage()
+        );
+    }
 }
 
 updateUser(){
@@ -85,17 +107,14 @@ updateUser(){
           };
           axios.get(`http://localhost:8081/getTeam`,axiosConfig)
           .then((response) => {
-          let datafinal = response.data;
-          this.setState({data:datafinal});
-          this.setState({loading:false})
+            let datafinal = response.data;
+            var old = JSON.stringify(datafinal).replace(/true/g, '"true"').replace(/false/g,'"false"');
+            var newArray = JSON.parse(old);
+            this.setState({data:newArray});
+            this.setState({loading:false});
+            var dataJson = this.ApplyFilter();
+            this.setState({dataTemp:dataJson});
           });
-  
-    // axios.get('http://localhost:8081/2020-05-21',axiosConfig)
-    // .then((response) => {
-    // let datafinal = response.data;
-    // this.setState({data:datafinal});
-    // this.setState({loading:false})
-    // });
     }
     dateConverter(date){
       var d = new Date(date),
@@ -111,37 +130,91 @@ updateUser(){
     return [year, month, day].join('-');
     }
     componentDidMount(){
-        // let date = new Date();
-        // date.setDate(date.getDate() + 7);
-        // let finalDate2 = this.dateConverter(date);
-        // let finalDate1 = this.dateConverter(new Date);
+
         this.fetchData();
     }
-    // componentDidUpdate(prevProps,prevState){
-    //   const prev = prevProps.fromDT;
-    //   const updated = this.props.fromDT;
-    //   const prev1 = prevProps.toDT;
-    //   const updated1 = this.props.toDT;
-    //   if(prev!== updated || prev1!== updated1)
-    //   {
-    //   this.fetchData(this.props.fromDT,this.props.toDT);
-    //   }
-    // }
+    ApplyFilter(){
+      var e = document.getElementById("only_support");
+      var strUser = e.options[e.selectedIndex].value;
+      if(strUser==="true")
+      {
+        this.setState({only_support:this.strUser});
+        var datatemp = this.state.data;
+        datatemp.forEach((element,index) => {
+          delete element["options"];
+        });
+      }
+      else
+      {
+        this.setState({only_support:this.strUser});
+        var datatemp = this.state.data;
+      }
+      var filtered = datatemp.filter(a=>a.only_support===strUser);
+      return filtered;
+      
+  }
 render(){
     const customStyles = {
         content : {
           left:'260px',
         }
       };
-    const Header = ["id","team_name", "email_id", "on_call_support_group", "primary_number", "secondary_number","only_support","options"];
-    const datafinal = this.state.data;
+    const datafinal = this.state.dataTemp;
     datafinal.forEach((element,index) => {
-            element["options"]=[<EditIcon onClick={()=>this.getVal(window.event)}/>]
+            element["options"]=[<Tooltip title="Edit"><IconButton aria-label="edit">
+            <EditIcon onClick={()=>this.getVal(window.event)}/>
+            </IconButton>
+          </Tooltip>,<Tooltip title="Delete">
+            <IconButton aria-label="delete">
+            <DeleteIcon onClick={()=>this.getId(window.event)}/>
+            </IconButton>
+          </Tooltip>]
     });
         if(this.state.loading) {
             return 'Loading...'
         }
+        let tabledisplay;
+        var e = document.getElementById("only_support");
+        if(e==null)
+        {
+          var strUser = "false";
+        }
+        else
+        {
+          var strUser = e.options[e.selectedIndex].value;
+
+        }
+        if(strUser==="true")
+        {
+          const Header = ["id","team_name", "email_id", "on_call_support_group","only_vtr_support"];
+          tabledisplay= <TablePagination
+          headers={ Header }
+          data={ datafinal }
+          columns="id.team_name.email_id.on_call_support_group.only_support"
+          arrayOption={ [["size", 'all', ' ']] }/>
+        }
+        else
+        {
+          const Header = ["id","team_name", "email_id", "on_call_support_group", "primary_number", "secondary_number","only_vtr_support","options"];
+          tabledisplay =  <TablePagination
+          headers={ Header }
+          data={ datafinal }
+          columns="id.team_name.email_id.on_call_support_group.primary_number.secondary_number.only_support.options"
+          arrayOption={ [["size", 'all', ' ']] }
+      />
+        }
     return(
+      <div>
+      <div>
+        <h3 class="aligncenter">VTR Contact Details</h3>
+        <div class="rightAlign">
+            <label>Only VTR Support?</label>
+            <select name="only_support" id="only_support" onChange={this.fetchData}>
+                <option value="true">True</option>
+                <option  value="false" selected>False</option>
+            </select>
+        </div>
+        <br/>
         <div class="">
             <ReactModal
              isOpen={this.state.showModal}
@@ -168,13 +241,12 @@ render(){
             </div>
             </div>
           </ReactModal>
-        <TablePagination
-            headers={ Header }
-            data={ datafinal }
-            columns="id.team_name.email_id.on_call_support_group.primary_number.secondary_number.only_support.options"
-            arrayOption={ [["size", 'all', ' ']] }
-        />
+          <div className="responsiveTable">
+       {tabledisplay}
+        </div>
         <NotificationContainer/>
+        </div>
+        </div>
         </div>
     );
 }

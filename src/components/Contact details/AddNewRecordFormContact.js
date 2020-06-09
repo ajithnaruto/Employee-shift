@@ -28,13 +28,13 @@ class AddNewRecordFormContact extends React.Component {
     }
     showValue(){
         const user = [{
-                support_group: this.support_group.value,
-                day:this.day.value,
-                support_engineer:this.support_engineer.value,
-                support_engineer_phone:this.support_engineer_phone.value,
-                support_engineer_email:this.support_engineer_email.value
+          team_name: this.team_name.value,
+          email_id:this.email_id.value,
+          on_call_support_group:this.on_call_support_group.value,
+          primary_number:this.primary_number.value,
+          secondary_number:this.secondary_number.value,
+          only_support:this.only_support.value
         }];
-        console.log(user);
         let axiosConfig = {
             headers: {
                 'Content-Type': 'application/json;charset=UTF-8',
@@ -42,10 +42,9 @@ class AddNewRecordFormContact extends React.Component {
             }
           };
           
-        axios.post(`http://localhost:8081/create`,user,axiosConfig)
+        axios.post(`http://localhost:8081/createContact`,user,axiosConfig)
           .then(res => {
-            console.log(res);
-            console.log(res.data);
+
           })
         }
     render () {
@@ -68,15 +67,15 @@ class AddNewRecordFormContact extends React.Component {
               <label for="name">Team Name</label>
               <input type="text"  name="team_name" placeholder="Enter Team Name" ref={el => this.team_name=el}/>
               <label for="email">Email Id</label>
-              <input type="text" name="email_id" placeholder="Enter Email Id" ref={el => this.day=el}/>
+              <input type="text" name="email_id" placeholder="Enter Email Id" ref={el => this.email_id=el}/>
               <label for="name">On Call Support Group</label>
-              <input type="text"  name="on_call_support_group" placeholder="Enter Support group" ref={el => this.support_engineer=el}/>
+              <input type="text"  name="on_call_support_group" placeholder="Enter Support group" ref={el => this.on_call_support_group=el}/>
               <label for="name">Primary Number</label>
-              <input type="text"  name="primary_number" placeholder="Enter Primary contact" ref={el => this.support_engineer_phone=el}/>
+              <input type="text"  name="primary_number" placeholder="Enter Primary contact" ref={el => this.primary_number=el}/>
               <label for="email">Secondary Number</label>
-              <input type="text" name="secondary_number" placeholder="Enter Secondary contact" ref={el => this.support_engineer_email=el}/>
+              <input type="text" name="secondary_number" placeholder="Enter Secondary contact" ref={el => this.secondary_number=el}/>
               <label for="email">Only Support</label>
-              <input type="text" name="only_support" placeholder="only support? True/False" ref={el => this.support_engineer_email=el}/>
+              <input type="text" name="only_support" placeholder="only support? True/False" ref={el => this.only_support=el}/>
             <button type="submit" class="submitt submitbtnbtn" onClick={()=>{this.showValue();this.reloadPage();}}>Submit</button>
             </div>
             </div>

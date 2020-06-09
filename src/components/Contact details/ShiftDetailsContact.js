@@ -43,13 +43,12 @@ updateData(result) {
     
   axios.post(`http://localhost:8081/createContact`,data,axiosConfig)
     .then(res => {
-
     })
  }
    render()
    {
       const templateCsvData =[
-         ['support_group', 'day', 'support_engineer','support_engineer_phone','support_engineer_email'] ,
+         ['on_call_support_group', 'day', 'support_engineer','support_engineer_phone','email_id'] ,
          ['Operations_VTR', '2020-05-21' , 'Test Engineer','+911234567890','mailme@mail.com']
        ];
       const templateFilename = "VTR-Shift_Roster.csv";

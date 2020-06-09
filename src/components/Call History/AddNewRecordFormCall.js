@@ -4,7 +4,7 @@ import axios from 'axios';
 import '../../css/style.css';
 import { MDBCloseIcon } from 'mdbreact';
 
-class AddNewRecordForm extends React.Component {
+class AddNewRecordFormCall extends React.Component {
     constructor () {
       super();
       this.state = {
@@ -28,11 +28,11 @@ class AddNewRecordForm extends React.Component {
     }
     showValue(){
         const user = [{
-                on_call_support_group: this.on_call_support_group.value,
-                day:this.day.value,
-                support_engineer:this.support_engineer.value,
-                support_engineer_phone:this.support_engineer_phone.value,
-                email_id:this.email_id.value
+                hosts: this.hosts.value.split(","),
+                updated_date:new Date().getTime(),
+                services:this.services.value.split(","),
+                start_datetime:this.start_datetime.value+"T"+this.start_time.value+":00.000+00:00",
+                end_datetime:this.end_datetime.value+"T"+this.end_time.value+":00.000+00:00"
         }];
         console.log(user);
         let axiosConfig = {
@@ -42,7 +42,7 @@ class AddNewRecordForm extends React.Component {
             }
           };
           
-        axios.post(`http://localhost:8081/create`,user,axiosConfig)
+        axios.post(`http://localhost:8081/createHost`,user,axiosConfig)
           .then(res => {
             console.log(res);
             console.log(res.data);
@@ -65,17 +65,17 @@ class AddNewRecordForm extends React.Component {
             <MDBCloseIcon onClick={this.handleCloseModal}/>
             <div class="row">
             <div class="singleform">
-            <h3> Shift Form </h3>
-              <label for="name">Support Group</label>
-              <input type="text"  name="on_call_support_group" placeholder="Enter Support Group" ref={el => this.on_call_support_group=el}/>
-              <label for="email">Day</label>
-              <input type="date" name="day" class="formclass" placeholder="Choose date" ref={el => this.day=el}/>
-              <label for="name">Support Engineer</label>
-              <input type="text"  name="support_engineer" placeholder="Enter Support Engineer name" ref={el => this.support_engineer=el}/>
-              <label for="name">Phone</label>
-              <input type="text"  name="support_engineer_phone" placeholder="Enter Support Engineer phone" ref={el => this.support_engineer_phone=el}/>
-              <label for="email">Email</label>
-              <input type="text" name="email_id" placeholder="Enter Support Engineer email"ref={el => this.email_id=el}/>
+            <h3> Hosts Form </h3>
+              <label for="name">Hosts Name</label>
+              <textarea type="text"  name="hosts" placeholder="Enter host" ref={el => this.hosts=el}/>
+              <label for="name">Services</label>
+              <textarea type="text"  name="services" placeholder="Enter Support Engineer name" ref={el => this.services=el}/>
+              <label for="name">Start datetime</label>
+              <input type="date"  name="start_datetime" class="formclass" placeholder="Enter Support Engineer phone" ref={el => this.start_datetime=el}/>
+              <input type="time" name="start_time" ref={el => this.start_time=el}/>
+              <label for="email">End datetime</label>
+              <input type="date" name="end_datetime" class="formclass" placeholder="Enter Support Engineer email" ref={el => this.end_datetime=el}/>
+              <input type="time" name="end_time"  ref={el => this.end_time=el}/>
               <button type="submit" class="submitt submitbtnbtn" onClick={()=>{this.showValue();this.handleCloseModal();this.reloadPage();}}>Submit</button>
             </div>
             </div>
@@ -85,4 +85,4 @@ class AddNewRecordForm extends React.Component {
       );
     }
   }
-export default AddNewRecordForm;
+export default AddNewRecordFormCall;

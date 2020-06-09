@@ -4,7 +4,7 @@ import axios from 'axios';
 import '../../css/style.css';
 import { MDBCloseIcon } from 'mdbreact';
 
-class AddNewRecordForm extends React.Component {
+class AddNewRecordFormPermanentHost extends React.Component {
     constructor () {
       super();
       this.state = {
@@ -28,11 +28,10 @@ class AddNewRecordForm extends React.Component {
     }
     showValue(){
         const user = [{
-                on_call_support_group: this.on_call_support_group.value,
-                day:this.day.value,
-                support_engineer:this.support_engineer.value,
-                support_engineer_phone:this.support_engineer_phone.value,
-                email_id:this.email_id.value
+                host: this.host.value,
+                updated_date:new Date().getTime(),
+                services:this.services.value.split(","),
+                time:this.time.value.split(",")
         }];
         console.log(user);
         let axiosConfig = {
@@ -42,7 +41,7 @@ class AddNewRecordForm extends React.Component {
             }
           };
           
-        axios.post(`http://localhost:8081/create`,user,axiosConfig)
+        axios.post(`http://localhost:8081/createPermanentHost`,user,axiosConfig)
           .then(res => {
             console.log(res);
             console.log(res.data);
@@ -57,7 +56,7 @@ class AddNewRecordForm extends React.Component {
       return (
           <div>
         <div>
-        {/* <DisplayTable handleOpenModal={this.handleOpenModal}/> */}
+        {/* <DisplayTablePermanentHost handleOpenModal={this.handleOpenModal}/> */}
         <div class="rightAlign"><input type="submit" value="Insert New record" onClick={this.handleOpenModal}/></div>
           <ReactModal 
              isOpen={this.state.showModal}
@@ -65,17 +64,13 @@ class AddNewRecordForm extends React.Component {
             <MDBCloseIcon onClick={this.handleCloseModal}/>
             <div class="row">
             <div class="singleform">
-            <h3> Shift Form </h3>
-              <label for="name">Support Group</label>
-              <input type="text"  name="on_call_support_group" placeholder="Enter Support Group" ref={el => this.on_call_support_group=el}/>
-              <label for="email">Day</label>
-              <input type="date" name="day" class="formclass" placeholder="Choose date" ref={el => this.day=el}/>
-              <label for="name">Support Engineer</label>
-              <input type="text"  name="support_engineer" placeholder="Enter Support Engineer name" ref={el => this.support_engineer=el}/>
-              <label for="name">Phone</label>
-              <input type="text"  name="support_engineer_phone" placeholder="Enter Support Engineer phone" ref={el => this.support_engineer_phone=el}/>
-              <label for="email">Email</label>
-              <input type="text" name="email_id" placeholder="Enter Support Engineer email"ref={el => this.email_id=el}/>
+            <h3>Parmanent Hosts Form </h3>
+              <label for="name">Hosts Name</label>
+              <input type="text"  name="hosts" placeholder="Enter host" ref={el => this.host=el}/>
+              <label for="name">Services (Ex: service1,service2)</label>
+              <textarea type="text"  name="services" placeholder="Enter Services" ref={el => this.services=el}/>
+              <label for="name">Time (Ex: 00:00-23:00,00:00-22:00)</label>
+              <textarea type="text"  name="time" class="formclass" placeholder="Enter time comma separated" ref={el => this.time=el}/>
               <button type="submit" class="submitt submitbtnbtn" onClick={()=>{this.showValue();this.handleCloseModal();this.reloadPage();}}>Submit</button>
             </div>
             </div>
@@ -85,4 +80,4 @@ class AddNewRecordForm extends React.Component {
       );
     }
   }
-export default AddNewRecordForm;
+export default AddNewRecordFormPermanentHost;

@@ -11,7 +11,7 @@ import {NotificationContainer, NotificationManager} from 'react-notifications';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 
-class DynamicTable extends React.Component{
+class DynamicTablePermanentHost extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -35,7 +35,17 @@ class DynamicTable extends React.Component{
         if (target) {
         var cells = target.getElementsByTagName("td");
         for (var i = 0; i < cells.length; i++) {
+          // if(i===4 || i===5)
+          // {
+          //   var temp = cells[i].innerHTML.split(" ");
+          //   this.state.updateForm.push(temp[0]);
+          //   this.state.updateForm.push(temp[1].split(":")[0]+":"+temp[1].split(":")[1]);
+          // }
+          // else
+          // {
             this.state.updateForm.push(cells[i].innerHTML)
+          //}
+            
         }
         this.setState({ showModal: true });
     }
@@ -51,18 +61,17 @@ getId(e){
         if (target) {
         var cells = target.getElementsByTagName("td");
         var idval = cells[0].innerHTML;
-        axios.delete("http://localhost:8081/delete/"+idval).then(
+        axios.delete("http://localhost:8081/delete_permanent_host/"+idval).then(
           this.reloadPage()
         );
     }
 }
 updateUser(){
     const UpdateUser = {
-            on_call_support_group: this.on_call_support_group.value,
-            day:this.day.value,
-            support_engineer:this.support_engineer.value,
-            support_engineer_phone:this.support_engineer_phone.value,
-            email_id:this.email_id.value
+      host: this.host.value,
+      updated_date:new Date().getTime(),
+      services:this.services.value.replace(/\n/g,"").split(","),
+      time:this.time.value.replace(/\n/g,"").split(",")
     };
     let axiosConfig = {
         headers: {
@@ -70,7 +79,7 @@ updateUser(){
             "Access-Control-Allow-Origin": "*",
         }
       };
-    axios.put(`http://localhost:8081/update_details/`+this.id.value,UpdateUser,axiosConfig)
+    axios.put(`http://localhost:8081/update_permanent_host_details/`+this.id.value,UpdateUser,axiosConfig)
       .then(res => {
         NotificationManager.success('', 'Updated Successfully!');
       })
@@ -88,11 +97,11 @@ updateUser(){
       var fromtemp = new Date(fromdt);
       var fromtemp1 = fromtemp.setDate(fromtemp.getDate()-1);
       var converted = new Date(fromtemp1);
-      var finalfromdt = converted.getFullYear()+"-"+("0" + (converted.getMonth() + 1)).slice(-2)+"-"+('0' + converted.getDate()).slice(-2);
+      var finalfromdt = converted.getFullYear()+"-"+("0" + (converted.getMonth() + 1)).slice(-2)+"-"+converted.getDate();
       var totemp = new Date(todt);
       var totemp1 = totemp.setDate(totemp.getDate()+1);
       var convertedTo = new Date(totemp1);
-      var finaltodt = convertedTo.getFullYear()+"-"+("0" + (convertedTo.getMonth() + 1)).slice(-2)+"-"+('0' + convertedTo.getDate()).slice(-2);
+      var finaltodt = convertedTo.getFullYear()+"-"+("0" + (convertedTo.getMonth() + 1)).slice(-2)+"-"+convertedTo.getDate();
       if(this.props.isReload)
         {
             window.location.reload(true);
@@ -104,9 +113,14 @@ updateUser(){
                 "Access-Control-Allow-Origin": "*",
             }
           };
-          axios.get(`http://localhost:8081/${finalfromdt}/${finaltodt}`,axiosConfig)
+          axios.get(`http://localhost:8081/getPermanentHosts`,axiosConfig)
           .then((response) => {
           let datafinal = response.data;
+          datafinal.forEach((element,index) => {
+            element["services"] = element["services"]+"\n";
+            element["time"] = element["time"]+"\n";
+            element["updated_date"] = element["updated_date"].split("T")[0] +" "+element["updated_date"].split("T")[1].split(":")[0]+":"+element["updated_date"].split("T")[1].split(":")[1];
+    });
           this.setState({data:datafinal});
           this.setState({loading:false})
           });
@@ -121,7 +135,6 @@ updateUser(){
         month = '0' + month;
     if (day.length < 2) 
         day = '0' + day;
-
     return [year, month, day].join('-');
     }
     reloadPage(){
@@ -150,7 +163,7 @@ render(){
           left:'260px',
         }
       };
-    const Header = ["id","on_call_support_group", "day", "support_engineer", "support_engineer_phone", "email_id","options"];
+    const Header = ["id","host", "last_updated_date", "services", "time","options"];
     const datafinal = this.state.data;
     datafinal.forEach((element,index) => {
             element["options"]=[<Tooltip title="Edit">
@@ -174,20 +187,18 @@ render(){
             <MDBCloseIcon onClick={this.handleCloseModal}/>
             <div class="row">
             <div class="singleform">
-            <h3> Shift Update Form </h3>
+            <h3> Permanent Host Update Form </h3>
               <label for="name">Id</label>
               <input type="text"  name="id" value={this.state.updateForm[0]} ref={el => this.id=el}/>
-              <label for="name">Support Group</label>
-              <input type="text"  name="on_call_support_group" defaultValue={this.state.updateForm[1]} ref={el => this.on_call_support_group=el}/>
-              <label for="email">Day</label>
-              <input type="date" class="formclass" name="day" defaultValue={this.state.updateForm[2]} ref={el => this.day=el}/>
-              <label for="name">Support Engineer</label>
-              <input type="text"  name="support_engineer" defaultValue={this.state.updateForm[3]} ref={el => this.support_engineer=el}/>
-              <label for="name">Phone</label>
-              <input type="text"  name="support_engineer_phone" defaultValue={this.state.updateForm[4]} ref={el => this.support_engineer_phone=el}/>
-              <label for="email">Email</label>
-              <input type="text" class="formclass" name="email_id" defaultValue={this.state.updateForm[5]} ref={el => this.email_id=el}/>
-            <button type="submit" class="submitt submitbtnbtn"onClick={()=>{this.updateUser();this.reloadPage()}}>Update</button>
+              <label for="name">Hosts Name</label>
+              <input type="text" name="host" defaultValue={this.state.updateForm[1]} ref={el => this.host=el}/>
+              <label for="email">Last Updated Date</label>
+              <input type="text" class="formclass" name="updated_date" value={this.state.updateForm[2]}/>
+              <label for="name">Services (Ex: service1,service2)</label>
+              <textarea type="text"  name="services" defaultValue={this.state.updateForm[3]} ref={el => this.services=el}/>
+              <label for="name">Time (Ex: 00:00-23:00,00:00-22:00)</label>
+              <textarea type="text"  name="time" class="formclass" defaultValue={this.state.updateForm[4]} ref={el => this.time=el}/>
+            <button type="submit" class="submitt submitbtnbtn"onClick={()=>{this.updateUser();this.reloadPage();}}>Update</button>
             </div>
             </div>
           </ReactModal>
@@ -195,7 +206,8 @@ render(){
         <TablePagination
             headers={ Header }
             data={ datafinal }
-            columns="id.on_call_support_group.day.support_engineer.support_engineer_phone.email_id.options"
+            title = "Hosts list"
+            columns="id.host.updated_date.services.time.options"
             perPageItemCount={ 8 }
             totalCount={ datafinal.length }
             arrayOption={ [["size", 'all', ' ']] }
@@ -206,4 +218,4 @@ render(){
     );
 }
 }
-export default DynamicTable;
+export default DynamicTablePermanentHost;

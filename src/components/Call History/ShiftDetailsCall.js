@@ -2,9 +2,9 @@ import React from 'react';
 import papa from 'papaparse';
 import axios from 'axios';
 import {CSVLink} from 'react-csv';
-import Filter from './Filter';
+import FilterCall from './FilterCall';
 
-class ShiftDetails extends React.Component {
+class ShiftDetailsCall extends React.Component {
    constructor(props) {
       super(props);
       this.onFileUpload = this.onFileUpload.bind(this);
@@ -47,7 +47,6 @@ class ShiftDetails extends React.Component {
          header: true
        });
     }
-    this.reloadPage();
      
 }
 reloadPage(){
@@ -55,54 +54,59 @@ reloadPage(){
 }
 updateData(result) {
    var data = result.data;
+   data.forEach((element,index) => {
+     element["hosts"] = element["hosts"].split(",");
+     element["services"] = element["services"].split(",");
+     element["updated_date"] =new Date().getTime();
+   });
+   console.log(data);
    let axiosConfig = {
       headers: {
           'Content-Type': 'application/json;charset=UTF-8',
           "Access-Control-Allow-Origin": "*",
       }
     };
-  axios.get(`http://localhost:8081/getAll`).then(
-    res=>{
-      var json = res.data;
-      console.log(json);
-      var json1 = data;
-      for(var i = 0; i < json.length; i++) {
-        var obj = json[i];
-        for(var j=0;j<json1.length;j++)
-        {
-          var obj1 = json1[j];
-          if(obj1.day === obj.day && obj1.support_group === obj.support_group)
-        {
-          axios.delete(`http://localhost:8081/delete/`+obj.id,axiosConfig)
-        .then(res => {
-          console.log(res);
-          console.log(res.data);
-        })
-        }
-        }
+  // axios.get(`http://localhost:8081/getHosts`).then(
+  //   res=>{
+  //     var json = res.data;
+  //     var json1 = data;
+  //     for(var i = 0; i < json.length; i++) {
+  //       var obj = json[i];
+  //       for(var j=0;j<json1.length;j++)
+  //       {
+  //         var obj1 = json1[j];
+  //         if(obj1.day === obj.day && obj1.support_group === obj.support_group)
+  //       {
+  //         axios.delete(`http://localhost:8081/delete_host/`+obj.id,axiosConfig)
+  //       .then(res => {
+  //         console.log(res);
+  //         console.log(res.data);
+  //       })
+  //       }
+  //       }
         
-    }
-      axios.post(`http://localhost:8081/create`,json1,axiosConfig)
+  //   }
+  //   }
+  // )
+  axios.post(`http://localhost:8081/createHost`,data,axiosConfig)
     .then(res => {
       console.log(res);
       console.log(res.data);
     })
-    }
-  )
 
  }
    render()
    {
       const templateCsvData =[
-         ['on_call_support_group', 'day', 'support_engineer','support_engineer_phone','email_id'] ,
-         ['Operations_VTR', '2020-05-21' , 'Test Engineer','+911234567890','mailme@mail.com']
+         ['hosts', 'services', 'start_datetime','end_datetime'] ,
+         ['puimprd02el-ib;paiaprd02el-ib', 'service1' , '09-04-2020  00:00:00','11-04-2020  00:00:00']
        ];
-      const templateFilename = "VTR-Shift_Roster.csv";
+      const templateFilename = "Nagios_Ignore_Hosts.csv";
     return (
        <div>
       <div class="row">
       <div class="col-md-12">
-      <div class="form">
+      {/* <div class="form">
          <div class="">
          <div>
             <h3 class="aligncenter">Upload VTR Shift roster</h3>
@@ -111,14 +115,14 @@ updateData(result) {
             <CSVLink data={templateCsvData} filename={templateFilename}>Download csv template</CSVLink>
          </div>
       </div> 
-      </div>
+      </div> */}
       </div>
       </div>
       <br/>
-      <Filter/>
+      <FilterCall/>
       </div>
     );
    }
 }
  
-export default ShiftDetails;
+export default ShiftDetailsCall;

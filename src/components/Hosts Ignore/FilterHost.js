@@ -1,7 +1,8 @@
 import React from 'react';
-import AddNewRecordForm from './AddNewRecordForm';
-import DisplayTable from './DisplayTable';
-class Filter extends React.Component{
+import AddNewRecordForm from './AddNewRecordFormHost';
+import DisplayTableHost from './DisplayTableHost';
+import AddNewRecordFormHost from './AddNewRecordFormHost';
+class FilterHost extends React.Component{
     constructor(props){
         super(props)
         this.ApplyFilter = this.ApplyFilter.bind(this);
@@ -11,11 +12,10 @@ class Filter extends React.Component{
         to_dt:""
     }
     componentDidMount(){
-        var date = new Date();
-        date.setDate(date.getDate() + 7);
-        document.getElementById('fromdt').valueAsDate = new Date();
-        document.getElementById('todt').valueAsDate = date;
-
+        // var date = new Date();
+        // date.setDate(date.getDate() + 7);
+        // document.getElementById('fromdt').valueAsDate = new Date();
+        // document.getElementById('todt').valueAsDate = date;
     }
     
     ApplyFilter(){
@@ -28,18 +28,21 @@ render(){
     return(
         <div>
         <div className="flexbox-container">
-        <div class="form">
+        {/* <div class="form">
             <h3 class="aligncenter">VTR Shift details</h3>
             <label>Start Date</label>: <input type="date" id="fromdt" ref={el => this.from_dt=el}/>
             <label>End Date</label>:   <input type="date"  id="todt" ref={el => this.to_dt=el}/>
             <input type="submit" class ="submitt submitbtn" onClick={this.ApplyFilter} value="Apply Filter"/>
-            <AddNewRecordForm/>
+        </div> */}
+        <div class="form"><AddNewRecordFormHost/>
+        <br/>
+        <DisplayTableHost fromDT={this.state.from_dt} toDT={this.state.to_dt}/>
         </div>
+        
         <br/>
         </div>
-        <DisplayTable fromDT={this.state.from_dt} toDT={this.state.to_dt}/>
         </div>
     );
 }
 }
-export default Filter;
+export default FilterHost;
