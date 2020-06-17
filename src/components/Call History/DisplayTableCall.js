@@ -207,8 +207,11 @@ updateUser(){
           {
             searchvalue = a.team;
           }
-          
-          return (searchvalue.toLowerCase().includes(searchstr));
+          if(searchvalue!=null)
+          {
+            return (searchvalue.toLowerCase().includes(searchstr));
+
+          }
           });
             this.setState({finalData:resultProductDataUpdated});
           }
