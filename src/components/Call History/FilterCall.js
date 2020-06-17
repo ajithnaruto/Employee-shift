@@ -13,7 +13,6 @@ class FilterCall extends React.Component{
         searchTerm:"",
     }
     ApplyFilter(){
-        console.log("Apply");
         var searchval = document.getElementById("searchTerm").value;
         var e = document.getElementById("searchUrl");
         var searchParam = e.options[e.selectedIndex].value;

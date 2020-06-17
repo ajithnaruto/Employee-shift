@@ -65,7 +65,6 @@ updateData(result) {
   axios.get(`http://192.168.44.47:8081/getAll`).then(
     res=>{
       var json = res.data;
-      console.log(json);
       var json1 = data;
       for(var i = 0; i < json.length; i++) {
         var obj = json[i];

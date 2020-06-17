@@ -34,7 +34,6 @@ class AddNewRecordFormHost extends React.Component {
                 start_datetime:this.start_datetime.value+"T"+this.start_time.value+":00.000+00:00",
                 end_datetime:this.end_datetime.value+"T"+this.end_time.value+":00.000+00:00"
         }];
-        console.log(user);
         let axiosConfig = {
             headers: {
                 'Content-Type': 'application/json;charset=UTF-8',

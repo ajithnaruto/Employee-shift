@@ -33,7 +33,6 @@ class ShiftDetailsContact extends React.Component {
 }
 updateData(result) {
    var data = result.data;
-   console.log(data);
    let axiosConfig = {
       headers: {
           'Content-Type': 'application/json;charset=UTF-8',

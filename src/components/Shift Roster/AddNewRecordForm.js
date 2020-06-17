@@ -33,7 +33,6 @@ class AddNewRecordForm extends React.Component {
                 support_engineer:this.support_engineer.value,
                 support_engineer_phone:this.support_engineer_phone.value,
         }];
-        console.log(user);
         let axiosConfig = {
             headers: {
                 'Content-Type': 'application/json;charset=UTF-8',

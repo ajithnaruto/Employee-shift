@@ -58,7 +58,6 @@ updateData(result) {
      element["services"] = element["services"].split(",");
      element["updated_date"] =new Date().getTime();
    });
-   console.log(data);
    let axiosConfig = {
       headers: {
           'Content-Type': 'application/json;charset=UTF-8',

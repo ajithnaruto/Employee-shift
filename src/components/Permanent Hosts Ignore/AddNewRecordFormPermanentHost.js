@@ -33,7 +33,6 @@ class AddNewRecordFormPermanentHost extends React.Component {
                 services:this.services.value.split(","),
                 time:this.time.value.split(",")
         }];
-        console.log(user);
         let axiosConfig = {
             headers: {
                 'Content-Type': 'application/json;charset=UTF-8',

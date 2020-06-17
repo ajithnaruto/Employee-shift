@@ -69,7 +69,6 @@ getId(e){
 updateUser(){
   var dts =  this.start_datetime.value+"T"+this.start_time.value+":00.000+00:00";
   var dte = this.end_datetime.value+"T"+this.end_time.value+":00.000+00:00";
-  console.log(dts);
     const UpdateUser = {
       hosts: this.hosts.value.replace(/\n/g,"").split(","),
       updated_date:new Date().getTime(),
@@ -77,7 +76,6 @@ updateUser(){
       start_datetime:Date.parse(dts),
       end_datetime: Date.parse(dte)
     };
-    console.log(UpdateUser);
     let axiosConfig = {
         headers: {
             'Content-Type': 'application/json;charset=UTF-8',
