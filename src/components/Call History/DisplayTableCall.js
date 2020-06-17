@@ -238,7 +238,7 @@ updateUser(){
         {
           this.apiCall = setInterval(() => {   
             window.location.reload();
-          }, [50000]);
+          }, [300000]);
         }
         
 
