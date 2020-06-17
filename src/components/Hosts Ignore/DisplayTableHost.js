@@ -61,7 +61,7 @@ getId(e){
         if (target) {
         var cells = target.getElementsByTagName("td");
         var idval = cells[0].innerHTML;
-        axios.delete("http://localhost:8081/delete_host/"+idval).then(
+        axios.delete("http://192.168.44.47:8081/delete_host/"+idval).then(
           this.reloadPage()
         );
     }
@@ -84,7 +84,7 @@ updateUser(){
             "Access-Control-Allow-Origin": "*",
         }
       };
-    axios.put(`http://localhost:8081/update_host_details/`+this.id.value,UpdateUser,axiosConfig)
+    axios.put(`http://192.168.44.47:8081/update_host_details/`+this.id.value,UpdateUser,axiosConfig)
       .then(res => {
         NotificationManager.success('', 'Updated Successfully!');
       })
@@ -118,7 +118,7 @@ updateUser(){
                 "Access-Control-Allow-Origin": "*",
             }
           };
-          axios.get(`http://localhost:8081/getHosts`,axiosConfig)
+          axios.get(`http://192.168.44.47:8081/getHosts`,axiosConfig)
           .then((response) => {
           let datafinal = response.data;
           datafinal.forEach((element,index) => {
@@ -170,7 +170,7 @@ render(){
           left:'260px',
         }
       };
-    const Header = ["id","hosts", "last_updated_date", "services", "start_datetime", "end_datetime","options"];
+    const Header = ["id","Hosts", "Last updated date", "Services", "Start datetime", "End datetime","Options"];
     const datafinal = this.state.data;
     datafinal.forEach((element,index) => {
             element["options"]=[<Tooltip title="Edit">
@@ -196,7 +196,7 @@ render(){
             <div class="singleform">
             <h3> Host Update Form </h3>
               <label for="name">Id</label>
-              <input type="text"  name="id" value={this.state.updateForm[0]} ref={el => this.id=el}/>
+              <input type="text" className="formclass" name="id" value={this.state.updateForm[0]} ref={el => this.id=el}/>
               <label for="name">Hosts Name</label>
               <textarea name="hosts" defaultValue={this.state.updateForm[1]} ref={el => this.hosts=el}/>
               <label for="email">Last Updated Date</label>
@@ -205,7 +205,7 @@ render(){
               <textarea type="text"  name="services" defaultValue={this.state.updateForm[3]} ref={el => this.services=el}/>
               <label for="name">Start Date</label>
               <input type="date"  name="start_datetime" class="formclass" defaultValue={this.state.updateForm[4]} ref={el => this.start_datetime=el}/>
-              <input type="time" name="start_time" defaultValue={this.state.updateForm[5]} ref={el => this.start_time=el}/>
+              <input type="time" className="formclass" name="start_time" defaultValue={this.state.updateForm[5]} ref={el => this.start_time=el}/>
               <label for="email">End Date</label>
               <input type="date" class="formclass" name="end_datetime" defaultValue={this.state.updateForm[6]} ref={el => this.end_datetime=el}/>
               <input type="time" name="end_time" defaultValue={this.state.updateForm[7]} ref={el => this.end_time=el}/>

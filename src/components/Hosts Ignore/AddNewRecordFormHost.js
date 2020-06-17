@@ -42,7 +42,7 @@ class AddNewRecordFormHost extends React.Component {
             }
           };
           
-        axios.post(`http://localhost:8081/createHost`,user,axiosConfig)
+        axios.post(`http://192.168.44.47:8081/createHost`,user,axiosConfig)
           .then(res => {
             console.log(res);
             console.log(res.data);
@@ -58,7 +58,7 @@ class AddNewRecordFormHost extends React.Component {
           <div>
         <div>
         {/* <DisplayTable handleOpenModal={this.handleOpenModal}/> */}
-        <div class="rightAlign"><input type="submit" value="Insert New record" onClick={this.handleOpenModal}/></div>
+        <div class="rightAlign"><input type="submit" value="Insert New record" class="submitt submitbtn" onClick={this.handleOpenModal}/></div>
           <ReactModal 
              isOpen={this.state.showModal}
              style={customStyles}>
@@ -69,7 +69,7 @@ class AddNewRecordFormHost extends React.Component {
               <label for="name">Hosts Name</label>
               <textarea type="text"  name="hosts" placeholder="Enter host" ref={el => this.hosts=el}/>
               <label for="name">Services</label>
-              <textarea type="text"  name="services" placeholder="Enter Support Engineer name" ref={el => this.services=el}/>
+              <textarea type="text" name="services" placeholder="Enter services" ref={el => this.services=el}/>
               <label for="name">Start datetime</label>
               <input type="date"  name="start_datetime" class="formclass" placeholder="Enter Support Engineer phone" ref={el => this.start_datetime=el}/>
               <input type="time" name="start_time" ref={el => this.start_time=el}/>

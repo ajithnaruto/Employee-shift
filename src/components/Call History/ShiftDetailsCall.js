@@ -1,7 +1,6 @@
 import React from 'react';
 import papa from 'papaparse';
 import axios from 'axios';
-import {CSVLink} from 'react-csv';
 import FilterCall from './FilterCall';
 
 class ShiftDetailsCall extends React.Component {
@@ -66,7 +65,7 @@ updateData(result) {
           "Access-Control-Allow-Origin": "*",
       }
     };
-  // axios.get(`http://localhost:8081/getHosts`).then(
+  // axios.get(`http://192.168.44.47:8081/getHosts`).then(
   //   res=>{
   //     var json = res.data;
   //     var json1 = data;
@@ -77,7 +76,7 @@ updateData(result) {
   //         var obj1 = json1[j];
   //         if(obj1.day === obj.day && obj1.support_group === obj.support_group)
   //       {
-  //         axios.delete(`http://localhost:8081/delete_host/`+obj.id,axiosConfig)
+  //         axios.delete(`http://192.168.44.47:8081/delete_host/`+obj.id,axiosConfig)
   //       .then(res => {
   //         console.log(res);
   //         console.log(res.data);
@@ -88,7 +87,7 @@ updateData(result) {
   //   }
   //   }
   // )
-  axios.post(`http://localhost:8081/createHost`,data,axiosConfig)
+  axios.post(`http://192.168.44.47:8081/createHost`,data,axiosConfig)
     .then(res => {
       console.log(res);
       console.log(res.data);

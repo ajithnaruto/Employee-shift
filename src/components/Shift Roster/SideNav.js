@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route, NavLink } from 'react-router-do
 import ShiftDetails from "./ShiftDetails";
 import DisplayTable from './DisplayTable';
 import ShiftDetailsContact from "../Contact details/ShiftDetailsContact";
-
+import Logo from "../../img/Prodapt Logo.PNG";
 class SideNav extends React.Component {
   reloadAll(){
     window.location.reload();
@@ -23,6 +23,7 @@ class SideNav extends React.Component {
       <div>
       <React.Fragment>
         <div name="side-nav" class="side-nav" style={sideNavStyle}>
+          <img src={Logo} height="30px" width="150px"/>
           <NavLink to={'/'} activeStyle={{color: "red"}} isActive={checkActive}>VTR Shift Roster</NavLink>
           <NavLink to={'/contact'} activeStyle={{color: "red"}}>VTR Contact details</NavLink>
           <NavLink to={'/host'} activeStyle={{color: "red"}}>VTR Ignore Host</NavLink>

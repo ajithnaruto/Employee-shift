@@ -51,7 +51,7 @@ getId(e){
         if (target) {
         var cells = target.getElementsByTagName("td");
         var idval = cells[0].innerHTML;
-        axios.delete("http://localhost:8081/delete/"+idval).then(
+        axios.delete("http://192.168.44.47:8081/delete/"+idval).then(
           this.reloadPage()
         );
     }
@@ -62,7 +62,6 @@ updateUser(){
             day:this.day.value,
             support_engineer:this.support_engineer.value,
             support_engineer_phone:this.support_engineer_phone.value,
-            email_id:this.email_id.value
     };
     let axiosConfig = {
         headers: {
@@ -70,7 +69,7 @@ updateUser(){
             "Access-Control-Allow-Origin": "*",
         }
       };
-    axios.put(`http://localhost:8081/update_details/`+this.id.value,UpdateUser,axiosConfig)
+    axios.put(`http://192.168.44.47:8081/update_details/`+this.id.value,UpdateUser,axiosConfig)
       .then(res => {
         NotificationManager.success('', 'Updated Successfully!');
       })
@@ -104,7 +103,7 @@ updateUser(){
                 "Access-Control-Allow-Origin": "*",
             }
           };
-          axios.get(`http://localhost:8081/${finalfromdt}/${finaltodt}`,axiosConfig)
+          axios.get(`http://192.168.44.47:8081/${finalfromdt}/${finaltodt}`,axiosConfig)
           .then((response) => {
           let datafinal = response.data;
           this.setState({data:datafinal});
@@ -150,7 +149,7 @@ render(){
           left:'260px',
         }
       };
-    const Header = ["id","on_call_support_group", "day", "support_engineer", "support_engineer_phone", "email_id","options"];
+    const Header = ["id","on_call_support_group", "day", "support_engineer", "support_engineer_phone","options"];
     const datafinal = this.state.data;
     datafinal.forEach((element,index) => {
             element["options"]=[<Tooltip title="Edit">
@@ -176,17 +175,15 @@ render(){
             <div class="singleform">
             <h3> Shift Update Form </h3>
               <label for="name">Id</label>
-              <input type="text"  name="id" value={this.state.updateForm[0]} ref={el => this.id=el}/>
+              <input type="text" className="formclass"  name="id" value={this.state.updateForm[0]} ref={el => this.id=el}/>
               <label for="name">Support Group</label>
-              <input type="text"  name="on_call_support_group" defaultValue={this.state.updateForm[1]} ref={el => this.on_call_support_group=el}/>
+              <input type="text" className="formclass" name="on_call_support_group" defaultValue={this.state.updateForm[1]} ref={el => this.on_call_support_group=el}/>
               <label for="email">Day</label>
               <input type="date" class="formclass" name="day" defaultValue={this.state.updateForm[2]} ref={el => this.day=el}/>
               <label for="name">Support Engineer</label>
-              <input type="text"  name="support_engineer" defaultValue={this.state.updateForm[3]} ref={el => this.support_engineer=el}/>
+              <input type="text" className="formclass" name="support_engineer" defaultValue={this.state.updateForm[3]} ref={el => this.support_engineer=el}/>
               <label for="name">Phone</label>
-              <input type="text"  name="support_engineer_phone" defaultValue={this.state.updateForm[4]} ref={el => this.support_engineer_phone=el}/>
-              <label for="email">Email</label>
-              <input type="text" class="formclass" name="email_id" defaultValue={this.state.updateForm[5]} ref={el => this.email_id=el}/>
+              <input type="text"  className="formclass" name="support_engineer_phone" defaultValue={this.state.updateForm[4]} ref={el => this.support_engineer_phone=el}/>
             <button type="submit" class="submitt submitbtnbtn"onClick={()=>{this.updateUser();this.reloadPage()}}>Update</button>
             </div>
             </div>
@@ -195,7 +192,7 @@ render(){
         <TablePagination
             headers={ Header }
             data={ datafinal }
-            columns="id.on_call_support_group.day.support_engineer.support_engineer_phone.email_id.options"
+            columns="id.on_call_support_group.day.support_engineer.support_engineer_phone.options"
             perPageItemCount={ 8 }
             totalCount={ datafinal.length }
             arrayOption={ [["size", 'all', ' ']] }

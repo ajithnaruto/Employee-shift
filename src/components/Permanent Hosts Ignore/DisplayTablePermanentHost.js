@@ -2,7 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import { TablePagination } from 'react-pagination-table';
 import EditIcon from '@material-ui/icons/Edit';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ReactModal from 'react-modal';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { MDBCloseIcon } from 'mdbreact';
@@ -10,6 +9,7 @@ import 'react-notifications/lib/notifications.css';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
+import '../../css/style.css';
 
 class DynamicTablePermanentHost extends React.Component{
     constructor(props){
@@ -61,7 +61,7 @@ getId(e){
         if (target) {
         var cells = target.getElementsByTagName("td");
         var idval = cells[0].innerHTML;
-        axios.delete("http://localhost:8081/delete_permanent_host/"+idval).then(
+        axios.delete("http://192.168.44.47:8081/delete_permanent_host/"+idval).then(
           this.reloadPage()
         );
     }
@@ -79,7 +79,7 @@ updateUser(){
             "Access-Control-Allow-Origin": "*",
         }
       };
-    axios.put(`http://localhost:8081/update_permanent_host_details/`+this.id.value,UpdateUser,axiosConfig)
+    axios.put(`http://192.168.44.47:8081/update_permanent_host_details/`+this.id.value,UpdateUser,axiosConfig)
       .then(res => {
         NotificationManager.success('', 'Updated Successfully!');
       })
@@ -113,7 +113,7 @@ updateUser(){
                 "Access-Control-Allow-Origin": "*",
             }
           };
-          axios.get(`http://localhost:8081/getPermanentHosts`,axiosConfig)
+          axios.get(`http://192.168.44.47:8081/getPermanentHosts`,axiosConfig)
           .then((response) => {
           let datafinal = response.data;
           datafinal.forEach((element,index) => {
@@ -163,7 +163,7 @@ render(){
           left:'260px',
         }
       };
-    const Header = ["id","host", "last_updated_date", "services", "time","options"];
+    const Header = ["id","Host", "Last updated date", "Services", "Time","Options"];
     const datafinal = this.state.data;
     datafinal.forEach((element,index) => {
             element["options"]=[<Tooltip title="Edit">
@@ -189,16 +189,16 @@ render(){
             <div class="singleform">
             <h3> Permanent Host Update Form </h3>
               <label for="name">Id</label>
-              <input type="text"  name="id" value={this.state.updateForm[0]} ref={el => this.id=el}/>
+              <input type="text"  className="formclass" name="id" value={this.state.updateForm[0]} ref={el => this.id=el}/>
               <label for="name">Hosts Name</label>
-              <input type="text" name="host" defaultValue={this.state.updateForm[1]} ref={el => this.host=el}/>
+              <input type="text" className="formclass" name="host" defaultValue={this.state.updateForm[1]} ref={el => this.host=el}/>
               <label for="email">Last Updated Date</label>
               <input type="text" class="formclass" name="updated_date" value={this.state.updateForm[2]}/>
               <label for="name">Services (Ex: service1,service2)</label>
               <textarea type="text"  name="services" defaultValue={this.state.updateForm[3]} ref={el => this.services=el}/>
               <label for="name">Time (Ex: 00:00-23:00,00:00-22:00)</label>
               <textarea type="text"  name="time" class="formclass" defaultValue={this.state.updateForm[4]} ref={el => this.time=el}/>
-            <button type="submit" class="submitt submitbtnbtn"onClick={()=>{this.updateUser();this.reloadPage();}}>Update</button>
+            <button type="submit" class="submitt submitbtnbtn" onClick={()=>{this.updateUser();this.reloadPage();}}>Update</button>
             </div>
             </div>
           </ReactModal>

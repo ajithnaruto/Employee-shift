@@ -42,7 +42,7 @@ class AddNewRecordFormContact extends React.Component {
             }
           };
           
-        axios.post(`http://localhost:8081/createContact`,user,axiosConfig)
+        axios.post(`http://192.168.44.47:8081/createContact`,user,axiosConfig)
           .then(res => {
 
           })
@@ -56,7 +56,7 @@ class AddNewRecordFormContact extends React.Component {
       return (
           <div>
         <div>
-        <div class="rightAlign"><input type="submit" value="Insert New record" onClick={this.handleOpenModal}/></div>
+        <div class="rightAlign"><input type="submit" value="Insert New record" class="submitt submitbtn" onClick={this.handleOpenModal}/></div>
           <ReactModal 
              isOpen={this.state.showModal}
              style={customStyles}>
@@ -65,17 +65,17 @@ class AddNewRecordFormContact extends React.Component {
             <div class="singleform">
             <h3> Add New Contact </h3>
               <label for="name">Team Name</label>
-              <input type="text"  name="team_name" placeholder="Enter Team Name" ref={el => this.team_name=el}/>
+              <input type="text"  className="formclass" name="team_name" placeholder="Enter Team Name" ref={el => this.team_name=el}/>
               <label for="email">Email Id</label>
-              <input type="text" name="email_id" placeholder="Enter Email Id" ref={el => this.email_id=el}/>
+              <input type="text"  className="formclass" name="email_id" placeholder="Enter Email Id" ref={el => this.email_id=el}/>
               <label for="name">On Call Support Group</label>
-              <input type="text"  name="on_call_support_group" placeholder="Enter Support group" ref={el => this.on_call_support_group=el}/>
+              <input type="text"  className="formclass" name="on_call_support_group" placeholder="Enter Support group" ref={el => this.on_call_support_group=el}/>
               <label for="name">Primary Number</label>
-              <input type="text"  name="primary_number" placeholder="Enter Primary contact" ref={el => this.primary_number=el}/>
+              <input type="text"  className="formclass" name="primary_number" placeholder="Enter Primary contact" ref={el => this.primary_number=el}/>
               <label for="email">Secondary Number</label>
-              <input type="text" name="secondary_number" placeholder="Enter Secondary contact" ref={el => this.secondary_number=el}/>
+              <input type="text" className="formclass" name="secondary_number" placeholder="Enter Secondary contact" ref={el => this.secondary_number=el}/>
               <label for="email">Only Support</label>
-              <input type="text" name="only_support" placeholder="only support? True/False" ref={el => this.only_support=el}/>
+              <input type="text" className="formclass" name="only_support" placeholder="only support? True/False" ref={el => this.only_support=el}/>
             <button type="submit" class="submitt submitbtnbtn" onClick={()=>{this.showValue();this.reloadPage();}}>Submit</button>
             </div>
             </div>

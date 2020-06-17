@@ -1,44 +1,58 @@
 import React from 'react';
-import AddNewRecordFormCall from './AddNewRecordFormCall';
 import DisplayTableCall from './DisplayTableCall';
 class FilterCall extends React.Component{
     constructor(props){
         super(props)
         this.ApplyFilter = this.ApplyFilter.bind(this);
+        
     }
     state={
         from_dt: "",
-        to_dt:""
+        to_dt:"",
+        colname:"",
+        searchTerm:"",
     }
-    componentDidMount(){
-        // var date = new Date();
-        // date.setDate(date.getDate() + 7);
-        // document.getElementById('fromdt').valueAsDate = new Date();
-        // document.getElementById('todt').valueAsDate = date;
-    }
-    
     ApplyFilter(){
+        console.log("Apply");
+        var searchval = document.getElementById("searchTerm").value;
+        var e = document.getElementById("searchUrl");
+        var searchParam = e.options[e.selectedIndex].value;
         this.setState({
             from_dt:this.from_dt.value,
-            to_dt:this.to_dt.value
+            to_dt:this.to_dt.value,
+            searchTerm:searchval,
+            colname:searchParam
+            
         });
+    }
+    componentDidMount(){
+        let DT = new Date();
+        document.getElementById('fromdt').valueAsDate = new Date();
+        document.getElementById('todt').valueAsDate =  new Date(DT.setDate(DT.getDate()+1));
+
     }
 render(){
     return(
         <div>
+            <div className="dateFilter">
+        <label>Start Date: </label><input type="Date" id="fromdt" ref={el => this.from_dt=el}/><br/>
+        <label>End_ Date:   </label><input type="Date" id="todt" ref={el => this.to_dt=el}/> 
+    </div>
         <div className="flexbox-container">
-        {/* <div class="form">
-            <h3 class="aligncenter">VTR Shift details</h3>
-            <label>Start Date</label>: <input type="date" id="fromdt" ref={el => this.from_dt=el}/>
-            <label>End Date</label>:   <input type="date"  id="todt" ref={el => this.to_dt=el}/>
-            <input type="submit" class ="submitt submitbtn" onClick={this.ApplyFilter} value="Apply Filter"/>
-        </div> */}
-        <div class="form"><AddNewRecordFormCall/>
-        <br/>
-        <DisplayTableCall fromDT={this.state.from_dt} toDT={this.state.to_dt}/>
-        </div>
-        
-        <br/>
+    <div class="wrap">
+   <div class="search">
+   <select id="searchUrl" name="searchUrl">
+  <option value="app">App</option>
+  <option value="engineer">Engineer</option>
+  <option value="team">Team</option>
+  <option value="priority">Priority</option>
+</select>
+      <input type="text" class="searchTerm" id="searchTerm"/>
+      <input type="submit" value="Search" id="applyfilter" class="submitt submitbtn" onClick={this.ApplyFilter}/>
+   </div>
+</div>
+<br/>
+<DisplayTableCall fromDT={this.state.from_dt} toDT={this.state.to_dt} searchVal={this.state.colname} searchterm = {this.state.searchTerm}/>
         </div>
         </div>
     );

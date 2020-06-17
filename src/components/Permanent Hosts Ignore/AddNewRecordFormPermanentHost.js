@@ -41,7 +41,7 @@ class AddNewRecordFormPermanentHost extends React.Component {
             }
           };
           
-        axios.post(`http://localhost:8081/createPermanentHost`,user,axiosConfig)
+        axios.post(`http://192.168.44.47:8081/createPermanentHost`,user,axiosConfig)
           .then(res => {
             console.log(res);
             console.log(res.data);
@@ -57,7 +57,7 @@ class AddNewRecordFormPermanentHost extends React.Component {
           <div>
         <div>
         {/* <DisplayTablePermanentHost handleOpenModal={this.handleOpenModal}/> */}
-        <div class="rightAlign"><input type="submit" value="Insert New record" onClick={this.handleOpenModal}/></div>
+        <div class="rightAlign"><input type="submit" value="Insert New record" class="submitt submitbtn" onClick={this.handleOpenModal}/></div>
           <ReactModal 
              isOpen={this.state.showModal}
              style={customStyles}>
@@ -66,7 +66,7 @@ class AddNewRecordFormPermanentHost extends React.Component {
             <div class="singleform">
             <h3>Parmanent Hosts Form </h3>
               <label for="name">Hosts Name</label>
-              <input type="text"  name="hosts" placeholder="Enter host" ref={el => this.host=el}/>
+              <input type="text" className="formclass" name="hosts" placeholder="Enter host" ref={el => this.host=el}/>
               <label for="name">Services (Ex: service1,service2)</label>
               <textarea type="text"  name="services" placeholder="Enter Services" ref={el => this.services=el}/>
               <label for="name">Time (Ex: 00:00-23:00,00:00-22:00)</label>

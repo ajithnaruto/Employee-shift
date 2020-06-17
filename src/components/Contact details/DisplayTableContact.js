@@ -20,7 +20,8 @@ class DynamicTableContact extends React.Component{
             dataTemp:[],
             loading:true,
             updateForm:[],
-            only_support: false
+            only_support: false,
+            emails:[]
           };
           this.handleOpenModal = this.handleOpenModal.bind(this);
           this.handleCloseModal = this.handleCloseModal.bind(this);
@@ -55,7 +56,7 @@ getId(e){
         if (target) {
         var cells = target.getElementsByTagName("td");
         var idval = cells[0].innerHTML;
-        axios.delete("http://localhost:8081/delete_contact/"+idval).then(
+        axios.delete("http://192.168.44.47:8081/delete_contact/"+idval).then(
           this.reloadPage()
         );
     }
@@ -76,7 +77,7 @@ updateUser(){
             "Access-Control-Allow-Origin": "*",
         }
       };
-    axios.put(`http://localhost:8081/update_contact_details/`+this.id.value,UpdateUser,axiosConfig)
+    axios.put(`http://192.168.44.47:8081/update_contact_details/`+this.id.value,UpdateUser,axiosConfig)
       .then(res => {
         NotificationManager.success('', 'Updated Successfully!');
       })
@@ -105,7 +106,7 @@ updateUser(){
                 "Access-Control-Allow-Origin": "*",
             }
           };
-          axios.get(`http://localhost:8081/getTeam`,axiosConfig)
+          axios.get(`http://192.168.44.47:8081/getTeam`,axiosConfig)
           .then((response) => {
             let datafinal = response.data;
             var old = JSON.stringify(datafinal).replace(/true/g, '"true"').replace(/false/g,'"false"');
@@ -134,6 +135,18 @@ updateUser(){
         this.fetchData();
     }
     ApplyFilter(){
+      let axiosConfig = {
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            "Access-Control-Allow-Origin": "*",
+        }
+      };
+      var tdyDate = new Date().toISOString().slice(0,10);
+      axios.get(`http://192.168.44.47:8081/${tdyDate}`,axiosConfig)
+      .then((response) => {
+       var res =  response.data;
+       this.setState({emails:res});
+      });
       var e = document.getElementById("only_support");
       var strUser = e.options[e.selectedIndex].value;
       if(strUser==="true")
@@ -143,15 +156,28 @@ updateUser(){
         datatemp.forEach((element,index) => {
           delete element["options"];
         });
+        var filtered = datatemp.filter(a=>a.only_support===strUser);
+        var JsonObj = this.state.emails;
+        for (var key in JsonObj) {
+          let supportGroup = JsonObj[key].on_call_support_group;
+          filtered.forEach((element,index) => {
+            if(supportGroup === element["on_call_support_group"])
+            {
+              element["phone_number"]= JsonObj[key].support_engineer_phone;
+              element["support_engineer"]= JsonObj[key].support_engineer;
+              element["support_email"] = JsonObj[key].email_id;
+            }
+    });
+      }
+        return filtered;
       }
       else
       {
         this.setState({only_support:this.strUser});
         var datatemp = this.state.data;
+        var filtered = datatemp.filter(a=>a.only_support===strUser);
+        return filtered;
       }
-      var filtered = datatemp.filter(a=>a.only_support===strUser);
-      return filtered;
-      
   }
 render(){
     const customStyles = {
@@ -164,11 +190,8 @@ render(){
             element["options"]=[<Tooltip title="Edit"><IconButton aria-label="edit">
             <EditIcon onClick={()=>this.getVal(window.event)}/>
             </IconButton>
-          </Tooltip>,<Tooltip title="Delete">
-            <IconButton aria-label="delete">
-            <DeleteIcon onClick={()=>this.getId(window.event)}/>
-            </IconButton>
-          </Tooltip>]
+          </Tooltip>,
+          ]
     });
         if(this.state.loading) {
             return 'Loading...'
@@ -186,16 +209,18 @@ render(){
         }
         if(strUser==="true")
         {
-          const Header = ["id","team_name", "email_id", "on_call_support_group","only_vtr_support"];
+          const title ="**To edit support_engineer,phone_number and support_engineer_email_id please use VTR Shift Roster tab"
+          const Header = ["id","Team name","Resolver team email id","On call support group","Support engineer","Phone number","Only vtr support"];
           tabledisplay= <TablePagination
+          subTitle = {title}
           headers={ Header }
           data={ datafinal }
-          columns="id.team_name.email_id.on_call_support_group.only_support"
+          columns="id.team_name.email_id.on_call_support_group.support_engineer.phone_number.only_support"
           arrayOption={ [["size", 'all', ' ']] }/>
         }
         else
         {
-          const Header = ["id","team_name", "email_id", "on_call_support_group", "primary_number", "secondary_number","only_vtr_support","options"];
+          const Header = ["id","Team name", "Email id", "On call support group", "Primary number", "Secondary number","Only vtr support","Options"];
           tabledisplay =  <TablePagination
           headers={ Header }
           data={ datafinal }
@@ -224,19 +249,19 @@ render(){
             <div class="singleform">
             <h3> Contact Update Form </h3>
               <label for="name">Id</label>
-              <input type="text"  name="id" value={this.state.updateForm[0]} ref={el => this.id=el}/>
+              <input type="text" className="formclass" name="id" value={this.state.updateForm[0]} ref={el => this.id=el}/>
               <label for="name">Team Name</label>
-              <input type="text"  name="team_name" defaultValue={this.state.updateForm[1]} ref={el => this.team_name=el}/>
+              <input type="text" className="formclass" name="team_name" defaultValue={this.state.updateForm[1]} ref={el => this.team_name=el}/>
               <label for="email">Email Id</label>
-              <input type="text" name="email_id" defaultValue={this.state.updateForm[2]} ref={el => this.email_id=el}/>
+              <input type="text"className="formclass" name="email_id" defaultValue={this.state.updateForm[2]} ref={el => this.email_id=el}/>
               <label for="name">On Call Support Group</label>
-              <input type="text"  name="on_call_support_group" defaultValue={this.state.updateForm[3]} ref={el => this.on_call_support_group=el}/>
+              <input type="text" className="formclass" name="on_call_support_group" defaultValue={this.state.updateForm[3]} ref={el => this.on_call_support_group=el}/>
               <label for="name">Primary Number</label>
-              <input type="text"  name="primary_number" defaultValue={this.state.updateForm[4]} ref={el => this.primary_number=el}/>
+              <input type="text" className="formclass" name="primary_number" defaultValue={this.state.updateForm[4]} ref={el => this.primary_number=el}/>
               <label for="email">Secondary Number</label>
-              <input type="text" name="secondary_number" defaultValue={this.state.updateForm[5]} ref={el => this.secondary_number=el}/>
+              <input type="text" className="formclass" name="secondary_number" defaultValue={this.state.updateForm[5]} ref={el => this.secondary_number=el}/>
               <label for="email">Only Support</label>
-              <input type="text" name="only_support" defaultValue={this.state.updateForm[6]} ref={el => this.only_support=el}/>
+              <input type="text" className="formclass" name="only_support" defaultValue={this.state.updateForm[6]} ref={el => this.only_support=el}/>
             <button type="submit" class="submitt submitbtnbtn"onClick={()=>{this.updateUser();this.reloadPage();}}>Update</button>
             </div>
             </div>

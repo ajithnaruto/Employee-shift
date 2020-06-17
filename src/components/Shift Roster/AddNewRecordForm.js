@@ -32,7 +32,6 @@ class AddNewRecordForm extends React.Component {
                 day:this.day.value,
                 support_engineer:this.support_engineer.value,
                 support_engineer_phone:this.support_engineer_phone.value,
-                email_id:this.email_id.value
         }];
         console.log(user);
         let axiosConfig = {
@@ -42,7 +41,7 @@ class AddNewRecordForm extends React.Component {
             }
           };
           
-        axios.post(`http://localhost:8081/create`,user,axiosConfig)
+        axios.post(`http://192.168.44.47:8081/create`,user,axiosConfig)
           .then(res => {
             console.log(res);
             console.log(res.data);
@@ -58,7 +57,7 @@ class AddNewRecordForm extends React.Component {
           <div>
         <div>
         {/* <DisplayTable handleOpenModal={this.handleOpenModal}/> */}
-        <div class="rightAlign"><input type="submit" value="Insert New record" onClick={this.handleOpenModal}/></div>
+        <div class="rightAlign"><input type="submit" value="Insert New record" class="submitt submitbtn" onClick={this.handleOpenModal}/></div>
           <ReactModal 
              isOpen={this.state.showModal}
              style={customStyles}>
@@ -67,15 +66,13 @@ class AddNewRecordForm extends React.Component {
             <div class="singleform">
             <h3> Shift Form </h3>
               <label for="name">Support Group</label>
-              <input type="text"  name="on_call_support_group" placeholder="Enter Support Group" ref={el => this.on_call_support_group=el}/>
+              <input type="text"  className="formclass" name="on_call_support_group" placeholder="Enter Support Group" ref={el => this.on_call_support_group=el}/>
               <label for="email">Day</label>
               <input type="date" name="day" class="formclass" placeholder="Choose date" ref={el => this.day=el}/>
               <label for="name">Support Engineer</label>
-              <input type="text"  name="support_engineer" placeholder="Enter Support Engineer name" ref={el => this.support_engineer=el}/>
+              <input type="text" className="formclass" name="support_engineer" placeholder="Enter Support Engineer name" ref={el => this.support_engineer=el}/>
               <label for="name">Phone</label>
-              <input type="text"  name="support_engineer_phone" placeholder="Enter Support Engineer phone" ref={el => this.support_engineer_phone=el}/>
-              <label for="email">Email</label>
-              <input type="text" name="email_id" placeholder="Enter Support Engineer email"ref={el => this.email_id=el}/>
+              <input type="text"  className="formclass" name="support_engineer_phone" placeholder="Enter Support Engineer phone" ref={el => this.support_engineer_phone=el}/>
               <button type="submit" class="submitt submitbtnbtn" onClick={()=>{this.showValue();this.handleCloseModal();this.reloadPage();}}>Submit</button>
             </div>
             </div>

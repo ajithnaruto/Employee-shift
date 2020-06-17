@@ -34,7 +34,7 @@ render(){
             <label>End Date</label>:   <input type="date"  id="todt" ref={el => this.to_dt=el}/>
             <input type="submit" class ="submitt submitbtn" onClick={this.ApplyFilter} value="Apply Filter"/>
         </div> */}
-        <div class="form"><AddNewRecordFormHost/>
+        <div class=""><AddNewRecordFormHost/>
         <br/>
         <DisplayTableHost fromDT={this.state.from_dt} toDT={this.state.to_dt}/>
         </div>

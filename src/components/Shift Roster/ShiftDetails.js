@@ -3,6 +3,8 @@ import papa from 'papaparse';
 import axios from 'axios';
 import {CSVLink} from 'react-csv';
 import Filter from './Filter';
+import 'react-notifications/lib/notifications.css'
+import {NotificationManager,NotificationContainer} from 'react-notifications';
 
 class ShiftDetails extends React.Component {
    constructor(props) {
@@ -47,7 +49,6 @@ class ShiftDetails extends React.Component {
          header: true
        });
     }
-    this.reloadPage();
      
 }
 reloadPage(){
@@ -61,7 +62,7 @@ updateData(result) {
           "Access-Control-Allow-Origin": "*",
       }
     };
-  axios.get(`http://localhost:8081/getAll`).then(
+  axios.get(`http://192.168.44.47:8081/getAll`).then(
     res=>{
       var json = res.data;
       console.log(json);
@@ -73,7 +74,7 @@ updateData(result) {
           var obj1 = json1[j];
           if(obj1.day === obj.day && obj1.support_group === obj.support_group)
         {
-          axios.delete(`http://localhost:8081/delete/`+obj.id,axiosConfig)
+          axios.delete(`http://192.168.44.47:8081/delete/`+obj.id,axiosConfig)
         .then(res => {
           console.log(res);
           console.log(res.data);
@@ -82,20 +83,22 @@ updateData(result) {
         }
         
     }
-      axios.post(`http://localhost:8081/create`,json1,axiosConfig)
+      axios.post(`http://192.168.44.47:8081/create`,json1,axiosConfig)
     .then(res => {
       console.log(res);
       console.log(res.data);
     })
     }
   )
+  NotificationManager.success('','Uploaded Successfully!');
+  window.setTimeout(this.reloadPage,5000);
 
  }
    render()
    {
       const templateCsvData =[
-         ['on_call_support_group', 'day', 'support_engineer','support_engineer_phone','email_id'] ,
-         ['Operations_VTR', '2020-05-21' , 'Test Engineer','+911234567890','mailme@mail.com']
+         ['on_call_support_group', 'day', 'support_engineer','support_engineer_phone'] ,
+         ['Operations_VTR', '2020-05-21' , 'Test Engineer','+911234567890']
        ];
       const templateFilename = "VTR-Shift_Roster.csv";
     return (
@@ -116,6 +119,7 @@ updateData(result) {
       </div>
       <br/>
       <Filter/>
+      <NotificationContainer/>
       </div>
     );
    }
