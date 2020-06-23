@@ -32,7 +32,9 @@ class AddNewRecordFormContact extends React.Component {
           email_id:this.email_id.value,
           on_call_support_group:this.on_call_support_group.value,
           primary_number:this.primary_number.value,
+          primary_support_engineer:this.primary_support_engineer,
           secondary_number:this.secondary_number.value,
+          secondary_support_engineer:this.secondary_support_engineer,
           only_support:this.only_support.value
         }];
         let axiosConfig = {
@@ -42,7 +44,7 @@ class AddNewRecordFormContact extends React.Component {
             }
           };
           
-        axios.post(`http://192.168.44.47:8081/createContact`,user,axiosConfig)
+        axios.post(`http://localhost:8081/createContact`,user,axiosConfig)
           .then(res => {
 
           })
@@ -72,8 +74,12 @@ class AddNewRecordFormContact extends React.Component {
               <input type="text"  className="formclass" name="on_call_support_group" placeholder="Enter Support group" ref={el => this.on_call_support_group=el}/>
               <label for="name">Primary Number</label>
               <input type="text"  className="formclass" name="primary_number" placeholder="Enter Primary contact" ref={el => this.primary_number=el}/>
+              <label for="name">Primary Support Engineer</label>
+              <input type="text" className="formclass" name="primary_support_engineer" placeholder="Enter Primary support engineer name" ref={el => this.primary_support_engineer=el}/>
               <label for="email">Secondary Number</label>
               <input type="text" className="formclass" name="secondary_number" placeholder="Enter Secondary contact" ref={el => this.secondary_number=el}/>
+              <label for="name">Secondary Support Engineer</label>
+              <input type="text" className="formclass" name="secondary_support_engineer" placeholder="Enter Secondary support engineer name" ref={el => this.secondary_support_engineer=el}/>
               <label for="email">Only Support</label>
               <input type="text" className="formclass" name="only_support" placeholder="only support? True/False" ref={el => this.only_support=el}/>
             <button type="submit" class="submitt submitbtnbtn" onClick={()=>{this.showValue();this.reloadPage();}}>Submit</button>

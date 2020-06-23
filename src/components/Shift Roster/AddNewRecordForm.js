@@ -40,7 +40,7 @@ class AddNewRecordForm extends React.Component {
             }
           };
           
-        axios.post(`http://192.168.44.47:8081/create`,user,axiosConfig)
+        axios.post(`http://localhost:8081/create`,user,axiosConfig)
           .then(res => {
             console.log(res);
             console.log(res.data);
@@ -65,7 +65,13 @@ class AddNewRecordForm extends React.Component {
             <div class="singleform">
             <h3> Shift Form </h3>
               <label for="name">Support Group</label>
-              <input type="text"  className="formclass" name="on_call_support_group" placeholder="Enter Support Group" ref={el => this.on_call_support_group=el}/>
+              <select className="dropdown" ref={el => this.on_call_support_group=el}>
+  <option value="Infra/Middleware/Wintel">Infra/Middleware/Wintel</option>
+  <option value="DBA">DBA</option>
+  <option value="Continuidad Operacional">Continuidad Operacional</option>
+  <option value="GSA">GSA</option>
+</select>
+              {/* <input type="text"  className="formclass" name="on_call_support_group" placeholder="Enter Support Group" ref={el => this.on_call_support_group=el}/> */}
               <label for="email">Day</label>
               <input type="date" name="day" class="formclass" placeholder="Choose date" ref={el => this.day=el}/>
               <label for="name">Support Engineer</label>

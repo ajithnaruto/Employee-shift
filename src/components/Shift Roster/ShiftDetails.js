@@ -43,6 +43,7 @@ class ShiftDetails extends React.Component {
     {
       this.setState.isReload=true;
       const csvfile = this.state.selectedFile;
+      console.log(csvfile);
        papa.parse(csvfile, {
          complete: this.updateData,
          skipEmptyLines: true,
@@ -62,7 +63,7 @@ updateData(result) {
           "Access-Control-Allow-Origin": "*",
       }
     };
-  axios.get(`http://192.168.44.47:8081/getAll`).then(
+  axios.get(`http://localhost:8081/getAll`).then(
     res=>{
       var json = res.data;
       var json1 = data;
@@ -73,7 +74,7 @@ updateData(result) {
           var obj1 = json1[j];
           if(obj1.day === obj.day && obj1.support_group === obj.support_group)
         {
-          axios.delete(`http://192.168.44.47:8081/delete/`+obj.id,axiosConfig)
+          axios.delete(`http://localhost:8081/delete/`+obj.id,axiosConfig)
         .then(res => {
           console.log(res);
           console.log(res.data);
@@ -82,7 +83,15 @@ updateData(result) {
         }
         
     }
-      axios.post(`http://192.168.44.47:8081/create`,json1,axiosConfig)
+    json1.forEach((element,index) => {
+      if(element["on_call_support_group"].includes("/"))
+      {
+        console.log(element["on_call_support_group"]);
+        console.log(element["on_call_support_group"].replace(/\s/g,''));
+        element["on_call_support_group"]= element["on_call_support_group"].replace(/\s/g,'');
+      }
+});
+      axios.post(`http://localhost:8081/create`,json1,axiosConfig)
     .then(res => {
       console.log(res);
       console.log(res.data);

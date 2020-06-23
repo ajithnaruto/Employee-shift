@@ -56,7 +56,7 @@ getId(e){
         if (target) {
         var cells = target.getElementsByTagName("td");
         var idval = cells[0].innerHTML;
-        axios.delete("http://192.168.44.47:8081/delete_contact/"+idval).then(
+        axios.delete("http://localhost:8081/delete_contact/"+idval).then(
           this.reloadPage()
         );
     }
@@ -68,7 +68,9 @@ updateUser(){
             email_id:this.email_id.value,
             on_call_support_group:this.on_call_support_group.value,
             primary_number:this.primary_number.value,
+            primary_support_engineer:this.primary_support_engineer.value,
             secondary_number:this.secondary_number.value,
+            secondary_support_engineer:this.secondary_support_engineer.value,
             only_support:this.only_support.value
     };
     let axiosConfig = {
@@ -77,7 +79,7 @@ updateUser(){
             "Access-Control-Allow-Origin": "*",
         }
       };
-    axios.put(`http://192.168.44.47:8081/update_contact_details/`+this.id.value,UpdateUser,axiosConfig)
+    axios.put(`http://localhost:8081/update_contact_details/`+this.id.value,UpdateUser,axiosConfig)
       .then(res => {
         NotificationManager.success('', 'Updated Successfully!');
       })
@@ -106,7 +108,7 @@ updateUser(){
                 "Access-Control-Allow-Origin": "*",
             }
           };
-          axios.get(`http://192.168.44.47:8081/getTeam`,axiosConfig)
+          axios.get(`http://localhost:8081/getTeam`,axiosConfig)
           .then((response) => {
             let datafinal = response.data;
             var old = JSON.stringify(datafinal).replace(/true/g, '"true"').replace(/false/g,'"false"');
@@ -142,7 +144,7 @@ updateUser(){
         }
       };
       var tdyDate = new Date().toISOString().slice(0,10);
-      axios.get(`http://192.168.44.47:8081/${tdyDate}`,axiosConfig)
+      axios.get(`http://localhost:8081/${tdyDate}`,axiosConfig)
       .then((response) => {
        var res =  response.data;
        this.setState({emails:res});
@@ -220,11 +222,11 @@ render(){
         }
         else
         {
-          const Header = ["id","Team name", "Email id", "On call support group", "Primary number", "Secondary number","Only vtr support","Options"];
+          const Header = ["id","Team name", "Email id", "On call support group","Primary Support Engineer", "Primary number", "Secondary Support Engineer","Secondary number","Only vtr support","Options"];
           tabledisplay =  <TablePagination
           headers={ Header }
           data={ datafinal }
-          columns="id.team_name.email_id.on_call_support_group.primary_number.secondary_number.only_support.options"
+          columns="id.team_name.email_id.on_call_support_group.primary_support_engineer.primary_number.secondary_support_engineer.secondary_number.only_support.options"
           arrayOption={ [["size", 'all', ' ']] }
       />
         }
@@ -256,12 +258,16 @@ render(){
               <input type="text"className="formclass" name="email_id" defaultValue={this.state.updateForm[2]} ref={el => this.email_id=el}/>
               <label for="name">On Call Support Group</label>
               <input type="text" className="formclass" name="on_call_support_group" defaultValue={this.state.updateForm[3]} ref={el => this.on_call_support_group=el}/>
+              <label for="name">Primary Support Engineer</label>
+              <input type="text" className="formclass" name="primary_support_engineer" placeholder="Enter Primary support engineer name" defaultValue={this.state.updateForm[4]} ref={el => this.primary_support_engineer=el}/>
               <label for="name">Primary Number</label>
-              <input type="text" className="formclass" name="primary_number" defaultValue={this.state.updateForm[4]} ref={el => this.primary_number=el}/>
+              <input type="text" className="formclass" name="primary_number" defaultValue={this.state.updateForm[5]} ref={el => this.primary_number=el}/>
+              <label for="name">Secondary Support Engineer</label>
+              <input type="text" className="formclass" name="secondary_support_engineer" placeholder="Enter Secondary support engineer name" defaultValue={this.state.updateForm[6]} ref={el => this.secondary_support_engineer=el}/>
               <label for="email">Secondary Number</label>
-              <input type="text" className="formclass" name="secondary_number" defaultValue={this.state.updateForm[5]} ref={el => this.secondary_number=el}/>
+              <input type="text" className="formclass" name="secondary_number" defaultValue={this.state.updateForm[7]} ref={el => this.secondary_number=el}/>
               <label for="email">Only Support</label>
-              <input type="text" className="formclass" name="only_support" defaultValue={this.state.updateForm[6]} ref={el => this.only_support=el}/>
+              <input type="text" className="formclass" name="only_support" defaultValue={this.state.updateForm[8]} ref={el => this.only_support=el}/>
             <button type="submit" class="submitt submitbtnbtn"onClick={()=>{this.updateUser();this.reloadPage();}}>Update</button>
             </div>
             </div>

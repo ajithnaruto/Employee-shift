@@ -51,7 +51,7 @@ getId(e){
         if (target) {
         var cells = target.getElementsByTagName("td");
         var idval = cells[0].innerHTML;
-        axios.delete("http://192.168.44.47:8081/delete/"+idval).then(
+        axios.delete("http://localhost:8081/delete/"+idval).then(
           this.reloadPage()
         );
     }
@@ -69,7 +69,7 @@ updateUser(){
             "Access-Control-Allow-Origin": "*",
         }
       };
-    axios.put(`http://192.168.44.47:8081/update_details/`+this.id.value,UpdateUser,axiosConfig)
+    axios.put(`http://localhost:8081/update_details/`+this.id.value,UpdateUser,axiosConfig)
       .then(res => {
         NotificationManager.success('', 'Updated Successfully!');
       })
@@ -103,7 +103,7 @@ updateUser(){
                 "Access-Control-Allow-Origin": "*",
             }
           };
-          axios.get(`http://192.168.44.47:8081/${finalfromdt}/${finaltodt}`,axiosConfig)
+          axios.get(`http://localhost:8081/${finalfromdt}/${finaltodt}`,axiosConfig)
           .then((response) => {
           let datafinal = response.data;
           this.setState({data:datafinal});
@@ -177,7 +177,12 @@ render(){
               <label for="name">Id</label>
               <input type="text" className="formclass"  name="id" value={this.state.updateForm[0]} ref={el => this.id=el}/>
               <label for="name">Support Group</label>
-              <input type="text" className="formclass" name="on_call_support_group" defaultValue={this.state.updateForm[1]} ref={el => this.on_call_support_group=el}/>
+              <select className="dropdown" defaultValue={this.state.updateForm[1]} ref={el => this.on_call_support_group=el}>
+  <option value="Infra/Middleware/Wintel">Infra/Middleware/Wintel</option>
+  <option value="DBA">DBA</option>
+  <option value="Continuidad Operacional">Continuidad Operacional</option>
+  <option value="GSA">GSA</option>
+</select>
               <label for="email">Day</label>
               <input type="date" class="formclass" name="day" defaultValue={this.state.updateForm[2]} ref={el => this.day=el}/>
               <label for="name">Support Engineer</label>
