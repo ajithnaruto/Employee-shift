@@ -40,7 +40,7 @@ updateData(result) {
       }
     };
     
-  axios.post(`http://localhost:8081/createContact`,data,axiosConfig)
+  axios.post(`http://192.168.44.47:8081/createContact`,data,axiosConfig)
     .then(res => {
     })
  }

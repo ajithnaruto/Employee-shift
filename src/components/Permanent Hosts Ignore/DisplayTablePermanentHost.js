@@ -61,7 +61,7 @@ getId(e){
         if (target) {
         var cells = target.getElementsByTagName("td");
         var idval = cells[0].innerHTML;
-        axios.delete("http://localhost:8081/delete_permanent_host/"+idval).then(
+        axios.delete("http://192.168.44.47:8081/delete_permanent_host/"+idval).then(
           this.reloadPage()
         );
     }
@@ -79,7 +79,7 @@ updateUser(){
             "Access-Control-Allow-Origin": "*",
         }
       };
-    axios.put(`http://localhost:8081/update_permanent_host_details/`+this.id.value,UpdateUser,axiosConfig)
+    axios.put(`http://192.168.44.47:8081/update_permanent_host_details/`+this.id.value,UpdateUser,axiosConfig)
       .then(res => {
         NotificationManager.success('', 'Updated Successfully!');
       })
@@ -113,7 +113,7 @@ updateUser(){
                 "Access-Control-Allow-Origin": "*",
             }
           };
-          axios.get(`http://localhost:8081/getPermanentHosts`,axiosConfig)
+          axios.get(`http://192.168.44.47:8081/getPermanentHosts`,axiosConfig)
           .then((response) => {
           let datafinal = response.data;
           datafinal.forEach((element,index) => {

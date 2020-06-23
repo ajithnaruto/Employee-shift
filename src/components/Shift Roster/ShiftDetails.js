@@ -63,7 +63,7 @@ updateData(result) {
           "Access-Control-Allow-Origin": "*",
       }
     };
-  axios.get(`http://localhost:8081/getAll`).then(
+  axios.get(`http://192.168.44.47:8081/getAll`).then(
     res=>{
       var json = res.data;
       var json1 = data;
@@ -74,7 +74,7 @@ updateData(result) {
           var obj1 = json1[j];
           if(obj1.day === obj.day && obj1.support_group === obj.support_group)
         {
-          axios.delete(`http://localhost:8081/delete/`+obj.id,axiosConfig)
+          axios.delete(`http://192.168.44.47:8081/delete/`+obj.id,axiosConfig)
         .then(res => {
           console.log(res);
           console.log(res.data);
@@ -91,7 +91,7 @@ updateData(result) {
         element["on_call_support_group"]= element["on_call_support_group"].replace(/\s/g,'');
       }
 });
-      axios.post(`http://localhost:8081/create`,json1,axiosConfig)
+      axios.post(`http://192.168.44.47:8081/create`,json1,axiosConfig)
     .then(res => {
       console.log(res);
       console.log(res.data);

@@ -56,7 +56,7 @@ getId(e){
         if (target) {
         var cells = target.getElementsByTagName("td");
         var idval = cells[0].innerHTML;
-        axios.delete("http://localhost:8081/delete_contact/"+idval).then(
+        axios.delete("http://192.168.44.47:8081/delete_contact/"+idval).then(
           this.reloadPage()
         );
     }
@@ -79,7 +79,7 @@ updateUser(){
             "Access-Control-Allow-Origin": "*",
         }
       };
-    axios.put(`http://localhost:8081/update_contact_details/`+this.id.value,UpdateUser,axiosConfig)
+    axios.put(`http://192.168.44.47:8081/update_contact_details/`+this.id.value,UpdateUser,axiosConfig)
       .then(res => {
         NotificationManager.success('', 'Updated Successfully!');
       })
@@ -108,7 +108,7 @@ updateUser(){
                 "Access-Control-Allow-Origin": "*",
             }
           };
-          axios.get(`http://localhost:8081/getTeam`,axiosConfig)
+          axios.get(`http://192.168.44.47:8081/getTeam`,axiosConfig)
           .then((response) => {
             let datafinal = response.data;
             var old = JSON.stringify(datafinal).replace(/true/g, '"true"').replace(/false/g,'"false"');
@@ -144,7 +144,7 @@ updateUser(){
         }
       };
       var tdyDate = new Date().toISOString().slice(0,10);
-      axios.get(`http://localhost:8081/${tdyDate}`,axiosConfig)
+      axios.get(`http://192.168.44.47:8081/${tdyDate}`,axiosConfig)
       .then((response) => {
        var res =  response.data;
        this.setState({emails:res});

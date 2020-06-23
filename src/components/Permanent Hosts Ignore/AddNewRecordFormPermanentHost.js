@@ -40,7 +40,7 @@ class AddNewRecordFormPermanentHost extends React.Component {
             }
           };
           
-        axios.post(`http://localhost:8081/createPermanentHost`,user,axiosConfig)
+        axios.post(`http://192.168.44.47:8081/createPermanentHost`,user,axiosConfig)
           .then(res => {
             console.log(res);
             console.log(res.data);

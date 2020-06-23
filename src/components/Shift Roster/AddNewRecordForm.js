@@ -40,7 +40,7 @@ class AddNewRecordForm extends React.Component {
             }
           };
           
-        axios.post(`http://localhost:8081/create`,user,axiosConfig)
+        axios.post(`http://192.168.44.47:8081/create`,user,axiosConfig)
           .then(res => {
             console.log(res);
             console.log(res.data);
